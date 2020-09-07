@@ -1,13 +1,51 @@
 {
   "pages":[
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/home/home",
+    "pages/projector/projector",
+    "pages/phone/phone",
+    "pages/other/other",
+    "pages/profile/profile"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "设备在线管理平台",
     "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "list": [
+      {"pagePath": "pages/home/home",
+      "text": "首页",
+      "iconPath": "images/设备清单.png",
+      "selectedIconPath": "images/设备清单_上焦.png"
+      },
+      {
+        "pagePath": "pages/projector/projector",
+        "text": "投影仪",
+        "iconPath": "images/projector.png",
+        "selectedIconPath": "images/projector_fill.png"
+      },
+      {
+        "pagePath": "pages/phone/phone",
+        "text": "手机",
+        "iconPath": "images/phone.png",
+        "selectedIconPath": "images/phone_fill.png"
+      },
+      {
+        "pagePath": "pages/other/other",
+        "text": "其他",
+        "iconPath": "images/other_device.png",
+        "selectedIconPath": "images/other_device_fill.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/我的.png",
+        "selectedIconPath": "images/我的_上焦.png"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
