@@ -1,2 +1,2 @@
 <!--pages/other/other.wxml-->
-<text>pages/other/other.wxml</text>
+<button type="warn">页面开发中 </button>
