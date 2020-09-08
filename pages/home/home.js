@@ -5,7 +5,26 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    //判断小程序的API，回调，参数，组件等是否在当前版本可用
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    borrowIsDisabled: false,
+    returnIsDisabled: true,
+    borrower: ""
+  },
+  clickBorrow: function (e) {
+    if (!this.data.borrowIsDisabled) {
+      this.setData({
+        borrowIsDisabled: true, //修改isDisabled的值为true（即启用状态）
+        returnIsDisabled: false,
+        borrower: "李柯陶"
+      })
+    } else { //当disabled=true时
+      this.setData({
+        borrowIsDisabled: false, //修改isDisabled的值为false（即禁用状态）
+        returnIsDisabled: true,
+        borrower:""
+      })
+    }
   },
 
   /**
