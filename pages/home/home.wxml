@@ -1,2 +1,32 @@
 <!--pages/home/home.wxml-->
-<text>pages/home/home.wxml</text>
+<view class="device_list">
+  <view class="item">
+    <view class="pic">
+      <image
+        src="//img13.360buyimg.com/mobilecms/s316x316_jfs/t1/85232/35/15048/110328/5e6cbef8Ed5e11309/eae99f363bbe7d5f.jpg!q70.dpg.webp">
+      </image>
+    </view>
+    <view class="content">
+      <view class="title">极米H2投影仪</view>
+      <view class="attr">
+        <view class="word">1920*1080</view>
+        <view class="word">自动</view>
+        <view class="word">LED</view>
+      </view>
+    </view>
+  </view>
+  <view class="item">
+    <view class="pic">
+      <image
+        src="//img10.360buyimg.com/n2/s240x240_jfs/t1/140479/28/1769/154766/5efa9117E4d1e14e8/2ac5b453ad7cfb4b.jpg!q70.jpg">
+      </image>
+    </view>
+    <view class="content">
+      <view class="title">Apple iPhone 11</view>
+      <view class="attr">
+        <view class="word">128GB</view>
+        <view class="word">6.1英寸</view>
+      </view>
+    </view>
+  </view>
+</view>
