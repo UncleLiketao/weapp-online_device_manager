@@ -7,11 +7,18 @@
       </image>
     </view>
     <view class="content">
-      <view class="title">极米H2投影仪</view>
+      <view class="title">极米H2投影仪
+      </view>
       <view class="attr">
         <view class="word">1920*1080</view>
-        <view class="word">自动</view>
-        <view class="word">LED</view>
+        <view class="word">自动 LED</view>
+        <view class="borrower">当前使用者：{{borrower}}</view>
+        <view class="btn-area">
+          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
+            disabled="{{borrowIsDisabled}}" bindtap="clickBorrow">借出</button>
+          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
+            disabled="{{returnIsDisabled}}" bindtap="clickBorrow">归还</button>
+        </view>
       </view>
     </view>
   </view>
@@ -26,7 +33,14 @@
       <view class="attr">
         <view class="word">128GB</view>
         <view class="word">6.1英寸</view>
+        <view class="btn-area">
+          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini"
+            open-type="getUserInfo">借出</button>
+          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
+            disabled="true">归还</button>
+        </view>
       </view>
+
     </view>
   </view>
 </view>

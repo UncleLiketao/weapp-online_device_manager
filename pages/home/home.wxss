@@ -1,27 +1,45 @@
 /* pages/home/home.wxss */
 
-.device_list .item{
+.device_list .item {
   display: flex;
   padding: 30rpx 20rpx;
 }
-.device_list .item .pic{
+
+.device_list .item .pic {
   width: 200rpx;
   height: 200rpx;
 }
-.device_list .item .pic image{
+
+.device_list .item .pic image {
   width: 200rpx;
   height: 200rpx;
 }
-.device_list .item .content{
+
+.device_list .item .content {
   margin-left: 20rpx;
 }
 
 .device_list .item .content .title {
   font-size: 32rpx;
-  
 }
- .device_list .item .attr {
+.device_list .item .content .title .userNickName {
+  font-size: 32rpx;
+  margin-left: 30rpx;
+  color: red;
+}
+.device_list .item .attr {
   font-size: 24rpx;
   margin-top: 10rpx;
   color: #999;
- }
+}
+.btn-area {
+  display: flex;
+}
+.btn-area .detail-button {
+  font-size: 32rpx;
+  width: 80%;
+  margin-top: 20rpx;
+  margin-right: 100rpx;
+  background-color: beige;
+  color: black;
+}
