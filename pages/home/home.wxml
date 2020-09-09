@@ -10,37 +10,14 @@
       <view class="title">极米H2投影仪
       </view>
       <view class="attr">
-        <view class="word">1920*1080</view>
+        <view class="word">设备串号：RFTGVAYUIOQW</view>
         <view class="word">自动 LED</view>
         <view class="borrower">当前使用者：{{borrower}}</view>
         <view class="btn-area">
           <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
-            disabled="{{borrowIsDisabled}}" bindtap="clickBorrow">借出</button>
-          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
-            disabled="{{returnIsDisabled}}" bindtap="clickBorrow">归还</button>
+            disabled="{{borrowIsDisabled}}" bindtap="deviceCodeScan">扫码借出</button>
         </view>
       </view>
-    </view>
-  </view>
-  <view class="item">
-    <view class="pic">
-      <image
-        src="//img10.360buyimg.com/n2/s240x240_jfs/t1/140479/28/1769/154766/5efa9117E4d1e14e8/2ac5b453ad7cfb4b.jpg!q70.jpg">
-      </image>
-    </view>
-    <view class="content">
-      <view class="title">Apple iPhone 11</view>
-      <view class="attr">
-        <view class="word">128GB</view>
-        <view class="word">6.1英寸</view>
-        <view class="btn-area">
-          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini"
-            open-type="getUserInfo">借出</button>
-          <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
-            disabled="true">归还</button>
-        </view>
-      </view>
-
     </view>
   </view>
 </view>
