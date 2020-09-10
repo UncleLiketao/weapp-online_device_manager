@@ -9,22 +9,32 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     borrowIsDisabled: false,
     returnIsDisabled: true,
-    borrower: ""
+    borrower: "",
+    //用户个人信息
+    userInfo: {
+      avatarUrl: "", //用户头像
+      nickName: "", //用户昵称
+    }
+
   },
   deviceCodeScan: function (e) {
+    var that = this
     wx.scanCode({
-      scanType: ['qrCode'],
+      scanType: ['barCode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
         if (str == "XGIMIH2LKT") {
           wx.showModal({
             title: '校验成功',
-            content: '点击确定输入你的名字',
+            content: '点击确定按钮输入你的名字',
             confirmColor: '#9ca9e9',
             success(res) {
               if (res.confirm) {
                 console.log('用户点击确定')
+                that.setData({
+                  borrower: that.data.userInfo.nickName
+                })
               } else if (res.cancel) {
                 console.log('用户点击取消')
               }
@@ -35,7 +45,7 @@ Page({
         } else {
           wx.showModal({
             title: '借出失败',
-            content: '设备二维码不匹配',
+            content: '设备条形码不匹配',
             showCancel: false,
             confirmColor: '#9ca9e9'
           });
@@ -45,11 +55,33 @@ Page({
     })
   },
 
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
+    // 查看是否授权
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wx.getUserInfo({
+            success: function (res) {
+              console.log(res.userInfo)
+              var avatarUrl = 'userInfo.avatarUrl';
+              var nickName = 'userInfo.nickName';
+              that.setData({
+                [avatarUrl]: res.userInfo.avatarUrl,
+                [nickName]: res.userInfo.nickName,
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+  bindGetUserInfo(e) {
+    console.log(e.detail.userInfo)
 
   },
 
