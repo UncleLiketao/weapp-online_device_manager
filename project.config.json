@@ -22,12 +22,13 @@
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
     "useMultiFrameRuntime": false,
-    "useApiHook": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
+    "enableEngineNative": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
@@ -36,7 +37,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.12.2",
-  "appid": "wx4ea998e2fe9f53c7",
+  "appid": "wx8982fa46a32e5e31",
   "projectname": "%E6%9E%81%E7%B1%B3%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E5%8A%A9%E6%89%8B",
   "debugOptions": {
     "hidedInDevtools": []
