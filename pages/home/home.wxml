@@ -1,21 +1,18 @@
 <!--pages/home/home.wxml-->
 <view class="device_list">
-  <view class="item">
+  <view class="item" wx:for="{{deviceData}}">
     <view class="pic">
-      <image
-        src="//img13.360buyimg.com/mobilecms/s316x316_jfs/t1/85232/35/15048/110328/5e6cbef8Ed5e11309/eae99f363bbe7d5f.jpg!q70.dpg.webp">
-      </image>
+      <image src="{{item.deviceImage}}"></image>
     </view>
     <view class="content">
-      <view class="title">极米H2投影仪
+      <view class="title">{{item.deviceName}}
       </view>
       <view class="attr">
-        <view class="word">设备串号：RFTGVAYUIOQW</view>
-        <view class="word">自动 LED</view>
+        <view class="sncode">设备SN码：{{item.SNcode}}</view>
         <view class="borrower">当前使用者：{{borrower}}</view>
         <view class="btn-area">
           <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo"
-            disabled="{{borrowIsDisabled}}" bindtap="deviceCodeScan">扫码借出</button>
+            bindtap="deviceCodeScan">扫码借出</button>
         </view>
       </view>
     </view>

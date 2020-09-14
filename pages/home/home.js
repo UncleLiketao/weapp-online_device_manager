@@ -14,20 +14,34 @@ Page({
     userInfo: {
       avatarUrl: "", //用户头像
       nickName: "", //用户昵称
-    }
-
+    },
+    //设备信息
+    deviceData: [
+      {
+        "id": 1,
+        "deviceName": "皓·LUNE 4K",
+        "deviceNo":"ST_0004",
+        "SNcode":"",
+        "deviceImage":"//img14.360buyimg.com/n2/s240x240_jfs/t1/122543/17/12347/115417/5f5b272cE4aa9c839/ed053e2926200afb.jpg!q70.jpg",
+        "owner": "李柯陶",
+        "barcode": "ST_0004",
+        "borrower": ""
+      }
+    ]
   },
   deviceCodeScan: function (e) {
     var that = this
+    var barcode = this.data.deviceData.barcode
+    console.log(barcode)
     wx.scanCode({
-      scanType: ['barCode'],
+      scanType: ['qrCode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
-        if (str == "XGIMIH2LKT") {
+        if (str == barcode) {
           wx.showModal({
             title: '校验成功',
-            content: '点击确定按钮输入你的名字',
+            content: '点击确定借出',
             confirmColor: '#9ca9e9',
             success(res) {
               if (res.confirm) {
@@ -59,6 +73,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getDevicesData();
     var that = this
     // 查看是否授权
     wx.getSetting({
@@ -82,7 +97,26 @@ Page({
   },
   bindGetUserInfo(e) {
     console.log(e.detail.userInfo)
+  },
 
+  getDevicesData: function (e) {
+    let self = this;
+    wx.request({
+      url: 'http://localhost:3000/data', //仅为示例，并非真实的接口地址
+      data: {},
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        console.log(res.data)
+        let result = res.data;
+        if (result.length > 0) {
+          self.setData({
+            deviceData: result
+          })
+        }
+      }
+    })
   },
 
   /**
