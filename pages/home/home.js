@@ -16,29 +16,42 @@ Page({
       nickName: "", //用户昵称
     },
     //设备信息
-    deviceData: [
-      {
-        "id": 1,
-        "deviceName": "皓·LUNE 4K",
-        "deviceNo":"ST_0004",
-        "SNcode":"",
-        "deviceImage":"//img14.360buyimg.com/n2/s240x240_jfs/t1/122543/17/12347/115417/5f5b272cE4aa9c839/ed053e2926200afb.jpg!q70.jpg",
-        "owner": "李柯陶",
-        "barcode": "ST_0004",
-        "borrower": ""
-      }
-    ]
+    deviceData: [{
+      "id": 1,
+      "deviceName": "皓·LUNE 4K",
+      "deviceNo": "ST_0004",
+      "SNcode": "",
+      "deviceImage": "//img14.360buyimg.com/n2/s240x240_jfs/t1/122543/17/12347/115417/5f5b272cE4aa9c839/ed053e2926200afb.jpg!q70.jpg",
+      "owner": "李柯陶",
+      "barcode": "ST_0004",
+      "borrower": ""
+    }],
+    //扫码信息
+    scanCode: 'ST_0039'
   },
   deviceCodeScan: function (e) {
-    var that = this
-    var barcode = this.data.deviceData.barcode
-    console.log(barcode)
+    //点击按钮时获取设备的数据（_id 字段）
+    let self = this
+    let deviceId = e.currentTarget.dataset.deviceid;
+    console.log(deviceId)
+    const db = wx.cloud.database();
+    db.collection('device_data').where({
+      _id: deviceId
+    }).get({
+      success: function (res) {
+        console.log(res.data[0].barcode)
+        self.setData({
+          scanCode: res.data[0].barcode
+        })
+      }
+    });
     wx.scanCode({
       scanType: ['qrCode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
-        if (str == barcode) {
+        console.log(self.data.scanCode)
+        if (str == self.data.scanCode) {
           wx.showModal({
             title: '校验成功',
             content: '点击确定借出',
@@ -46,9 +59,17 @@ Page({
             success(res) {
               if (res.confirm) {
                 console.log('用户点击确定')
-                that.setData({
-                  borrower: that.data.userInfo.nickName
-                })
+                const db = wx.cloud.database();
+                db.collection('device_data').where({
+                  _id: deviceId
+                }).update({
+                  data:{
+                    borrower: self.data.userInfo.nickName
+                  },
+                  success: function (res) {
+                    console.log(res)
+                  }
+                });
               } else if (res.cancel) {
                 console.log('用户点击取消')
               }
@@ -102,18 +123,18 @@ Page({
   /**
    * 从微信云数据库获取全部设备列表信息
    */
-  getDevicesDataTest: function(){
-      let self = this;
-      wx.cloud.init();
-      const db = wx.cloud.database()
-      db.collection('device_data').get({
-        success: function(res){
-          console.log(res.data)
-          self.setData({
-            deviceData: res.data
-          })
-        }
-      })
+  getDevicesDataTest: function () {
+    let self = this;
+    wx.cloud.init();
+    const db = wx.cloud.database()
+    db.collection('device_data').get({
+      success: function (res) {
+        console.log(res.data)
+        self.setData({
+          deviceData: res.data
+        })
+      }
+    })
   },
 
   /**
