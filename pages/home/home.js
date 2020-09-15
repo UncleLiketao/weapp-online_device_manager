@@ -73,7 +73,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getDevicesData();
+    this.getDevicesDataTest();
     var that = this
     // 查看是否授权
     wx.getSetting({
@@ -99,24 +99,21 @@ Page({
     console.log(e.detail.userInfo)
   },
 
-  getDevicesData: function (e) {
-    let self = this;
-    wx.request({
-      url: 'http://localhost:3000/data', //仅为示例，并非真实的接口地址
-      data: {},
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success(res) {
-        console.log(res.data)
-        let result = res.data;
-        if (result.length > 0) {
+  /**
+   * 从微信云数据库获取全部设备列表信息
+   */
+  getDevicesDataTest: function(){
+      let self = this;
+      wx.cloud.init();
+      const db = wx.cloud.database()
+      db.collection('device_data').get({
+        success: function(res){
+          console.log(res.data)
           self.setData({
-            deviceData: result
+            deviceData: res.data
           })
         }
-      }
-    })
+      })
   },
 
   /**
