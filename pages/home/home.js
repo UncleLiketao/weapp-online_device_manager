@@ -96,7 +96,29 @@ Page({
   onLoad: function (options) {
     this.getDevicesDataTest();
     var that = this
-    // 查看是否授权
+    /**
+     * 监听云数据库borrwer的变化
+     */
+    const db = wx.cloud.database()
+    const _ = db.command
+    const watcher = db.collection('device_data')
+    .where({
+      barcode: _.exists(true)
+    })
+    .watch({
+      onChange: function(snapshot) {
+        console.log('docs\'s changed events', snapshot.docChanges)
+        console.log('query result snapshot after the event', snapshot.docs)
+        console.log('is init data', snapshot.type === 'init')
+        that.getDevicesDataTest()
+      },
+      onError: function(err) {
+        console.error('the watch closed because of error', err)
+      }
+    })
+    /**
+   * 查看是否授权
+   */
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.userInfo']) {
