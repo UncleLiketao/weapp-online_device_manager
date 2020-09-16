@@ -8,7 +8,7 @@
       <view class="title">{{item.deviceName}}
       </view>
       <view class="attr">
-        <view class="sncode">设备SN码：{{item.snCode}}</view>
+        <view class="sncode">设备识别码：{{item.deviceNo}}</view>
         <view class="borrower">当前持有人：{{item.borrower}}</view>
         <view class="btn-area"  >
           <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo" data-deviceId="{{item._id}}"
