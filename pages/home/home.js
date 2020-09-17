@@ -17,14 +17,7 @@ Page({
     },
     //设备信息
     deviceData: [{
-      "id": 1,
-      "deviceName": "皓·LUNE 4K",
-      "deviceNo": "ST_0004",
-      "SNcode": "",
-      "deviceImage": "//img14.360buyimg.com/n2/s240x240_jfs/t1/122543/17/12347/115417/5f5b272cE4aa9c839/ed053e2926200afb.jpg!q70.jpg",
-      "owner": "李柯陶",
-      "barcode": "ST_0004",
-      "borrower": ""
+
     }],
     //扫码信息
     scanCode: 'ST_0039'
@@ -39,14 +32,14 @@ Page({
       _id: deviceId
     }).get({
       success: function (res) {
-        console.log(res.data[0].barcode)
+        console.log(res.data[0].deviceNo)
         self.setData({
-          scanCode: res.data[0].barcode
+          scanCode: res.data[0].deviceNo
         })
       }
     });
     wx.scanCode({
-      scanType: ['qrCode'],
+      scanType: ['barcode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
@@ -63,11 +56,11 @@ Page({
                 db.collection('device_data').where({
                   _id: deviceId
                 }).update({
-                  data:{
+                  data: {
                     borrower: self.data.userInfo.nickName
                   },
                   success: function (res) {
-                    console.log(res)
+                    // console.log(res)
                   }
                 });
               } else if (res.cancel) {
@@ -94,7 +87,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getDevicesDataTest();
+    this.getDevicesData();
     var that = this
     /**
      * 监听云数据库borrwer的变化
@@ -102,23 +95,20 @@ Page({
     const db = wx.cloud.database()
     const _ = db.command
     const watcher = db.collection('device_data')
-    .where({
-      barcode: _.exists(true)
-    })
-    .watch({
-      onChange: function(snapshot) {
-        console.log('docs\'s changed events', snapshot.docChanges)
-        console.log('query result snapshot after the event', snapshot.docs)
-        console.log('is init data', snapshot.type === 'init')
-        that.getDevicesDataTest()
-      },
-      onError: function(err) {
-        console.error('the watch closed because of error', err)
-      }
-    })
+      .where({
+        barcode: _.exists(true)
+      })
+      .watch({
+        onChange: function (snapshot) {
+          that.getDevicesData()
+        },
+        onError: function (err) {
+          console.error('the watch closed because of error', err)
+        }
+      })
     /**
-   * 查看是否授权
-   */
+     * 查看是否授权
+     */
     wx.getSetting({
       success(res) {
         if (res.authSetting['scope.userInfo']) {
@@ -145,7 +135,7 @@ Page({
   /**
    * 从微信云数据库获取全部设备列表信息
    */
-  getDevicesDataTest: function () {
+  getDevicesData: function () {
     let self = this;
     wx.cloud.init();
     const db = wx.cloud.database()
