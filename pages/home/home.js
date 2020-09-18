@@ -15,12 +15,10 @@ Page({
       avatarUrl: "", //用户头像
       nickName: "", //用户昵称
     },
-    //设备信息
-    deviceData: [{
-
-    }],
+    //首页所有设备信息
+    deviceData: [{}],
     //扫码信息
-    scanCode: 'ST_0039'
+    scanCode: ''
   },
   deviceCodeScan: function (e) {
     //点击按钮时获取设备的数据（_id 字段）
@@ -87,7 +85,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getDevicesData();
+    this.getDeviceData();
     var that = this
     /**
      * 监听云数据库borrwer的变化
@@ -96,11 +94,11 @@ Page({
     const _ = db.command
     const watcher = db.collection('device_data')
       .where({
-        barcode: _.exists(true)
+        deviceNo: _.exists(true)
       })
       .watch({
         onChange: function (snapshot) {
-          that.getDevicesData()
+          that.getDeviceData()
         },
         onError: function (err) {
           console.error('the watch closed because of error', err)
@@ -135,7 +133,7 @@ Page({
   /**
    * 从微信云数据库获取全部设备列表信息
    */
-  getDevicesData: function () {
+  getDeviceData: function () {
     let self = this;
     wx.cloud.init();
     const db = wx.cloud.database()

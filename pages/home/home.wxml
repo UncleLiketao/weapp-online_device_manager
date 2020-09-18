@@ -1,6 +1,6 @@
 <!--pages/home/home.wxml-->
 <view class="device_list">
-  <view class="item" wx:for="{{deviceData}}" >
+  <view class="item" wx:for="{{deviceData}}" wx:key="item" >
     <view class="pic">
       <image src="{{item.deviceImage}}"></image>
     </view>
