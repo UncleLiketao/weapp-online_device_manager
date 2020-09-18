@@ -15,13 +15,18 @@ Page({
       avatarUrl: "", //用户头像
       nickName: "", //用户昵称
     },
-    //首页所有设备信息
+    //设备信息
     deviceData: [{}],
     //扫码信息
     scanCode: ''
   },
+
+  /**
+   * 扫码函数
+   * @param {*} e 
+   */
   deviceCodeScan: function (e) {
-    //点击按钮时获取设备的数据（_id 字段）
+    //点击按钮时根据_id获取对应设备的deviceNo后保存到本地的初始数据scanCode用于后面与扫码获取值进行对比
     let self = this
     let deviceId = e.currentTarget.dataset.deviceid;
     console.log(deviceId)
@@ -36,12 +41,12 @@ Page({
         })
       }
     });
+    //扫码后如果和对应id设备deviceNo一致则将用户昵称更新至云端数据库borrower字段
     wx.scanCode({
       scanType: ['barcode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
-        console.log(self.data.scanCode)
         if (str == self.data.scanCode) {
           wx.showModal({
             title: '校验成功',
@@ -58,7 +63,7 @@ Page({
                     borrower: self.data.userInfo.nickName
                   },
                   success: function (res) {
-                    // console.log(res)
+                    console.log(res)
                   }
                 });
               } else if (res.cancel) {
@@ -87,9 +92,6 @@ Page({
   onLoad: function (options) {
     this.getDeviceData();
     var that = this
-    /**
-     * 监听云数据库borrwer的变化
-     */
     const db = wx.cloud.database()
     const _ = db.command
     const watcher = db.collection('device_data')
@@ -130,9 +132,8 @@ Page({
     console.log(e.detail.userInfo)
   },
 
-  /**
-   * 从微信云数据库获取全部设备列表信息
-   */
+
+  //从云开发数据库获取全部设备列表信息
   getDeviceData: function () {
     let self = this;
     wx.cloud.init();
