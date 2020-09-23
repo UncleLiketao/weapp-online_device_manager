@@ -12,7 +12,7 @@
         <view class="borrower">当前持有人：{{item.borrower}}</view>
         <view class="btn-area"  >
           <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo" data-deviceId="{{item._id}}"
-            bindtap="deviceCodeScan">扫码借出</button>
+            bindgetuserinfo="bindGetUserInfo">扫码借出</button>
         </view>
       </view>
     </view>
