@@ -43,9 +43,6 @@
   color: #999;
 }
 
-.btn-area {
-  display: flex;
-}
 .btn-area .detail-button {
   font-size: 32rpx;
   width: 80%;
@@ -54,3 +51,36 @@
   background-color: beige;
   color: black;
 }
+
+
+.search{
+  display: flex;
+  position: relative;
+ }
+.search .scan-button{
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+.scan-button .scan-button-image{
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  height: 40rpx;
+  width: 40rpx;
+}
+ .search input{
+  border:1px solid #ccc;
+  border-radius: 6px;
+  height: 33px;
+  margin-right: 20rpx;
+  width: 100%;
+ }
+ .icons{
+  position: absolute;
+  right: 20px;
+  top:5px;
+ }
+ .lists{
+  text-align: center;
+  margin-top: 20px;
+  color: rgb(230, 124, 25);
+ }

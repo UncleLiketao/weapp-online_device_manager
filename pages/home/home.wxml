@@ -1,6 +1,17 @@
 <!--pages/home/home.wxml-->
+<view class='search'>
+  <button wx:if="{{canIUse}}" class="scan-button" size="mini" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" bindtap="deviceCodeScan">
+    <cover-image class="scan-button-image" src="../../images/扫码(1).png"></cover-image>
+  </button>
+  
+  <input type='text' placeholder='请输入您要搜索的设备' bindinput='input' bindconfirm='confirm' />
+  <icon type='search' class='icons'></icon>
+  <view wx:for="{{list}}" wx:key='' class='lists'>
+    <text wx:if="{{item.show}}">{{item.name}}</text>
+  </view>
+</view>
 <view class="device_list">
-  <view class="item" wx:for="{{deviceData}}" wx:key="item" >
+  <view class="item" wx:for="{{deviceData}}" wx:key="item">
     <view class="pic">
       <image src="{{item.deviceImage}}"></image>
     </view>

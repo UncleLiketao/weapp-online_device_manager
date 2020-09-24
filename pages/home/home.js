@@ -7,8 +7,7 @@ Page({
   data: {
     //判断小程序的API，回调，参数，组件等是否在当前版本可用
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    borrowIsDisabled: false,
-    returnIsDisabled: true,
+    hasUserInfo: true,
     borrower: "",
     //用户个人信息
     userInfo: {
@@ -28,44 +27,45 @@ Page({
   deviceCodeScan: function (e) {
     //点击按钮时根据_id获取对应设备的deviceNo后保存到本地的初始数据scanCode用于后面与扫码获取值进行对比
     let self = this
-    let deviceId = e.currentTarget.dataset.deviceid;
-    console.log(deviceId)
-    const db = wx.cloud.database();
-    db.collection('device_data').where({
-      _id: deviceId
-    }).get({
-      success: function (res) {
-        console.log(res.data[0].deviceNo)
-        self.setData({
-          scanCode: res.data[0].deviceNo
-        })
-      }
-    });
+    // let deviceId = e.currentTarget.dataset.deviceid;
+    // console.log(deviceId)
+    // const db = wx.cloud.database();
+    // db.collection('device_data').where({
+    //   _id: deviceId
+    // }).get({
+    //   success: function (res) {
+    //     console.log(res.data[0].deviceNo)
+    //     self.setData({
+    //       scanCode: res.data[0].deviceNo
+    //     })
+    //   }
+    // });
     //扫码后如果和对应id设备deviceNo一致则将用户昵称更新至云端数据库borrower字段
-    wx.scanCode({
-      scanType: ['barcode'],
+    if(self.data.hasUserInfo){wx.scanCode({
+      scanType: ['barcode','qrCode'],
       success: (res) => {
         var str = res.result;
         console.log(str)
-        if (str == self.data.scanCode) {
+        // if (str == self.data.scanCode) {
+        if (str == "EHTAJD26CTAU") {
           wx.showModal({
-            title: '校验成功',
-            content: '点击确定借出',
+            title: '已找到匹配的设备',
+            content: '点击确定键借出设备',
             confirmColor: '#9ca9e9',
             success(res) {
               if (res.confirm) {
                 console.log('用户点击确定')
-                const db = wx.cloud.database();
-                db.collection('device_data').where({
-                  _id: deviceId
-                }).update({
-                  data: {
-                    borrower: self.data.userInfo.nickName
-                  },
-                  success: function (res) {
-                    console.log(res)
-                  }
-                });
+                // const db = wx.cloud.database();
+                // db.collection('device_data').where({
+                //   _id: deviceId
+                // }).update({
+                //   data: {
+                //     borrower: self.data.userInfo.nickName
+                //   },
+                //   success: function (res) {
+                //     console.log(res)
+                //   }
+                // });
               } else if (res.cancel) {
                 console.log('用户点击取消')
               }
@@ -76,7 +76,7 @@ Page({
         } else {
           wx.showModal({
             title: '借出失败',
-            content: '设备条形码不匹配',
+            content: '未找到匹配的设备',
             showCancel: false,
             confirmColor: '#9ca9e9'
           });
@@ -84,7 +84,8 @@ Page({
         }
       },
     })
-  },
+  }
+},
 
   /**
    * 生命周期函数--监听页面加载
