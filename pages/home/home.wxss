@@ -22,16 +22,27 @@
 .device_list .item .content .title {
   font-size: 32rpx;
 }
-.device_list .item .content .title .userNickName {
+.device_list .item .content .title  {
   font-size: 32rpx;
   margin-left: 30rpx;
-  color: red;
+  color: black;
 }
-.device_list .item .attr {
-  font-size: 24rpx;
-  margin-top: 10rpx;
+.device_list .item .content .attr .sncode {
+  font-style: "微软雅黑";
+  font-size: 30rpx;
+  margin-left: 30rpx;
+  margin-top: 20rpx;
   color: #999;
 }
+
+.device_list .item .content .attr .borrower {
+  font-style: "微软雅黑";
+  font-size: 30rpx;
+  margin-left: 30rpx;
+  margin-top: 20rpx;
+  color: #999;
+}
+
 .btn-area {
   display: flex;
 }
