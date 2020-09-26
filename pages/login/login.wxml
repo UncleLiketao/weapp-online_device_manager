@@ -1,0 +1,6 @@
+<!--pages/login/login.wxml-->
+输入用户名
+<input class="inpput" bindinput="getName"></input>
+输入您的密码
+<input class="inpput" bindinput="getPassword"></input>
+<button bindtap="register" type="primary">登录</button>

@@ -5,7 +5,8 @@
     "pages/phone/phone",
     "pages/other/other",
     "pages/profile/profile",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/login/login"
 
   ],
   "window":{

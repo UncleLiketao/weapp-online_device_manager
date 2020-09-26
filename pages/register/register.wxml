@@ -1,2 +1,8 @@
 <!--pages/register/register.wxml-->
-<text>pages/register/register.wxml</text>
+输入用户名
+<input class="inpput" bindinput="getName"></input>
+输入用户账号
+<input  class="inpput" bindinput="getAccount"></input>
+输入您的密码
+<input class="inpput" bindinput="getPassword"></input>
+<button bindtap="register" type="primary">注册</button>
