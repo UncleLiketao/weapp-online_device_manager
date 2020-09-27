@@ -5,14 +5,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    account:'',
+    name:'',
     password:'',
   },
 //获取输入的账号
-getAccount(event) {
+getName(event) {
   //console.log('账号', event.detail.value)
   this.setData({
-    account: event.detail.value
+    name: event.detail.value
   })
   
   },
@@ -25,27 +25,27 @@ getAccount(event) {
   },
   //点击登陆
   login() {
-  let account = this.data.account
+  let name = this.data.name
   let password = this.data.password
-  console.log('账号', account, '密码', password)
-  if (account.length < 4) {
+  console.log('账号', name, '密码', password)
+  if (!/^[\u4e00-\u9fa5]+$/i.test(name)) {
     wx.showToast({
       icon: 'none',
-      title: '账号至少4位',
+      title: '姓名只能是纯汉字',
     })
     return
   }
   if (password.length < 4) {
     wx.showToast({
       icon: 'none',
-      title: '账号至少4位',
+      title: '密码至少4位',
     })
     return
   }
   
   //登陆
   wx.cloud.database().collection('user').where({
-    account: account
+    name: name
   }).get({
     success(res) {
       console.log("获取数据成功", res)
@@ -56,10 +56,7 @@ getAccount(event) {
         wx.showToast({
           title: '登陆成功',
         })
-        // wx.navigateTo({
-        //   url: '../home/home?name=' + user.name,
-        // })
-        wx.navigateTo({
+        wx.switchTab({
           url: '/pages/home/home',
         })
         //保存用户登陆状态
@@ -68,7 +65,7 @@ getAccount(event) {
         console.log('登陆失败')
         wx.showToast({
           icon: 'none',
-          title: '账号或密码不正确',
+          title: '姓名或密码不正确',
         })
       }
     },
