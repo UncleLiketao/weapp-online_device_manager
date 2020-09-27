@@ -6,8 +6,9 @@ Page({
    */
   data: {
     name:'',
-    account:'',
-    password:''
+    department:'',
+    password:'',
+    authorize: 'false'
   },
   //获取用户名
   getName(event) {
@@ -16,11 +17,11 @@ Page({
       name: event.detail.value
     })
     },
-    //获取用户账号
-    getAccount(event) {
+    //获取部门
+    getDepartment(event) {
     console.log('获取输入的账号', event.detail.value)
     this.setData({
-      account: event.detail.value
+      department: event.detail.value
     })
     },
     // 获取密码
@@ -34,32 +35,26 @@ Page({
     //注册
     register() {
     let name = this.data.name
-    let account = this.data.account
+    let department = this.data.department
     let password = this.data.password
+    let authorize = this.data.authorize
     console.log("点击了注册")
     console.log("name", name)
-    console.log("account", account)
+    console.log("department", department)
     console.log("password", password)
-    //校验用户名
-    if (name.length < 2) {
+    //校验姓名
+    if (!/^[\u4e00-\u9fa5]+$/i.test(name)) {
       wx.showToast({
         icon: 'none',
-        title: '用户名至少2位',
-      })
-      return
-    }
-    if (name.length > 10) {
-      wx.showToast({
-        icon: 'none',
-        title: '用户名最多10位',
+        title: '姓名只能是纯汉字',
       })
       return
     }
     //校验账号
-    if (account.length < 4) {
+    if (!/^[\u4e00-\u9fa5]+$/i.test(department)) {
       wx.showToast({
         icon: 'none',
-        title: '账号至少4位',
+        title: '部门只能是存汉字',
       })
       return
     }
@@ -75,8 +70,9 @@ Page({
     wx.cloud.database().collection('user').add({
       data: {
         name: name,
-        account: account,
-        password: password
+        department: department,
+        password: password,
+        authorize: authorize
       },
       success(res) {
         console.log('注册成功', res)
