@@ -8,10 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    hasUserInfo: false,
-    userInfo: {},
-    borrower: "",
+    borrowerName: "",
+    borrowerDepartment: " ",
+    authorize: false,
     deviceData: [{}],
     deviceNoList: []
   },
@@ -38,58 +37,70 @@ Page({
       }
     })
   },
-  getScanCodeList: function () {
-    let self = this;
-  },
   /**
    * 扫码函数
    *
    */
   deviceCodeScan: function (e) {
-    let self = this
-    if (self.data.hasUserInfo) {
-      wx.scanCode({
-        scanType: ['barcode', 'qrCode'],
-        success: (res) => {
-          var str = res.result;
-          console.log(str)
-          if (self.data.deviceNoList.includes(str)) {
-            wx.showModal({
-              title: '已找到匹配的设备',
-              content: '点击确定键借出设备',
-              confirmColor: '#9ca9e9',
-              success(res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                  const db = wx.cloud.database();
-                  db.collection('device_data').where({
-                    deviceNo: str
-                  }).update({
-                    data: {
-                      borrower: self.data.userInfo.nickName
-                    },
-                    success: function (res) {
-                      console.log(res)
-                    }
-                  });
-                } else if (res.cancel) {
-                  console.log('用户点击取消')
+    let self = this;
+    wx.getStorage({
+      key: 'user',
+      success(res) {
+        console.log(res.data)
+        self.setData({
+          borrowerName: res.data["name"],
+          borrowerDepartment: res.data["department"] 
+        })
+        wx.scanCode({
+          scanType: ['barcode', 'qrCode'],
+          success: (res) => {
+            var str = res.result;
+            console.log(str)
+            if (self.data.deviceNoList.includes(str)) {
+              wx.showModal({
+                title: '已找到匹配的设备',
+                content: '点击确定键借出设备',
+                confirmColor: '#9ca9e9',
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                    const db = wx.cloud.database();
+                    db.collection('device_data').where({
+                      deviceNo: str
+                    }).update({
+                      data: {
+                        borrowerName: self.data.borrowerName,
+                        borrowerDepartment:self.data.borrowerDepartment
+                      },
+                      success: function (res) {
+                        console.log(res)
+                      }
+                    });
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
                 }
-              }
-            });
-            return;
-          } else {
-            wx.showModal({
-              title: '借出失败',
-              content: '未找到匹配的设备',
-              showCancel: false,
-              confirmColor: '#9ca9e9'
-            });
-            return;
-          }
-        },
-      })
-    }
+              });
+              return;
+            } else {
+              wx.showModal({
+                title: '借出失败',
+                content: '未找到匹配的设备',
+                showCancel: false,
+                confirmColor: '#9ca9e9'
+              });
+              return;
+            }
+          },
+        })
+      },
+      fail(res) {
+        wx.navigateTo({
+          url: '/pages/login/login',
+        })
+
+      }
+    })
   },
 
   /**
@@ -113,52 +124,52 @@ Page({
         }
       })
   },
-/**
- * 生命周期函数--监听页面初次渲染完成
- */
-onReady: function () {
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
 
-},
+  },
 
-/**
- * 生命周期函数--监听页面显示
- */
-onShow: function () {
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
 
-},
+  },
 
-/**
- * 生命周期函数--监听页面隐藏
- */
-onHide: function () {
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
 
-},
+  },
 
-/**
- * 生命周期函数--监听页面卸载
- */
-onUnload: function () {
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
 
-},
+  },
 
-/**
- * 页面相关事件处理函数--监听用户下拉动作
- */
-onPullDownRefresh: function () {
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
 
-},
+  },
 
-/**
- * 页面上拉触底事件的处理函数
- */
-onReachBottom: function () {
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
 
-},
+  },
 
-/**
- * 用户点击右上角分享
- */
-onShareAppMessage: function () {
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
 
-}
+  }
 })
