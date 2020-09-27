@@ -1,12 +1,12 @@
 <!--pages/home/home.wxml-->
 <view class='search'>
-  <button wx:if="{{canIUse}}" class="scan-button" size="mini" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" bindtap="deviceCodeScan">
+  <button class="scan-button" size="mini" bindtap="deviceCodeScan">
     <cover-image class="scan-button-image" src="../../images/扫码(1).png"></cover-image>
   </button>
 
   <input type='text' placeholder='请输入您要搜索的设备' bindinput='input' bindconfirm='confirm' />
   <icon type='search' class='icons'></icon>
-  <view wx:for="{{list}}" wx:key='' class='lists'>
+  <view wx:for="{{list}}" wx:key='item' class='lists'>
     <text wx:if="{{item.show}}">{{item.name}}</text>
   </view>
 </view>
@@ -20,7 +20,7 @@
       </view>
       <view class="attr">
         <view class="sncode">设备识别码：{{item.deviceNo}}</view>
-        <view class="borrower">当前持有人：{{item.borrower}}</view>
+        <view class="borrower">当前持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
         <!-- <view class="btn-area"  >
           <button wx:if="{{canIUse}}" class="detail-button" type="default" size="mini" open-type="getUserInfo" data-deviceId="{{item._id}}"
             bindgetuserinfo="bindGetUserInfo">扫码借出</button>
