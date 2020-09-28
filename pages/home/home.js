@@ -49,50 +49,58 @@ Page({
         console.log(res.data)
         self.setData({
           borrowerName: res.data["name"],
-          borrowerDepartment: res.data["department"] 
+          borrowerDepartment: res.data["department"],
+          authorize: res.data["authorize"]
         })
-        wx.scanCode({
-          scanType: ['barcode', 'qrCode'],
-          success: (res) => {
-            var str = res.result;
-            console.log(str)
-            if (self.data.deviceNoList.includes(str)) {
-              wx.showModal({
-                title: '已找到匹配的设备',
-                content: '点击确定键借出设备',
-                confirmColor: '#9ca9e9',
-                success(res) {
-                  if (res.confirm) {
-                    console.log('用户点击确定')
-                    const db = wx.cloud.database();
-                    db.collection('device_data').where({
-                      deviceNo: str
-                    }).update({
-                      data: {
-                        borrowerName: self.data.borrowerName,
-                        borrowerDepartment:self.data.borrowerDepartment
-                      },
-                      success: function (res) {
-                        console.log(res)
-                      }
-                    });
-                  } else if (res.cancel) {
-                    console.log('用户点击取消')
+        if (self.data.authorize) {
+          wx.scanCode({
+            scanType: ['barcode', 'qrCode'],
+            success: (res) => {
+              var str = res.result;
+              console.log(str)
+              if (self.data.deviceNoList.includes(str)) {
+                wx.showModal({
+                  title: '已找到匹配的设备',
+                  content: '点击确定键借出设备',
+                  confirmColor: '#9ca9e9',
+                  success(res) {
+                    if (res.confirm) {
+                      console.log('用户点击确定')
+                      const db = wx.cloud.database();
+                      db.collection('device_data').where({
+                        deviceNo: str
+                      }).update({
+                        data: {
+                          borrowerName: self.data.borrowerName,
+                          borrowerDepartment: self.data.borrowerDepartment
+                        },
+                        success: function (res) {
+                          console.log(res)
+                        }
+                      });
+                    } else if (res.cancel) {
+                      console.log('用户点击取消')
+                    }
                   }
-                }
-              });
-              return;
-            } else {
-              wx.showModal({
-                title: '借出失败',
-                content: '未找到匹配的设备',
-                showCancel: false,
-                confirmColor: '#9ca9e9'
-              });
-              return;
-            }
-          },
-        })
+                });
+                return;
+              } else {
+                wx.showModal({
+                  title: '借出失败',
+                  content: '未找到匹配的设备',
+                  showCancel: false,
+                  confirmColor: '#9ca9e9'
+                });
+                return;
+              }
+            },
+          })
+        } else {
+          wx.showToast({
+            icon: 'none',
+            title: '当前账户未授权，请联系管理员',
+          })
+        }
       },
       fail(res) {
         wx.navigateTo({
