@@ -1,2 +1,30 @@
-<!--pages/other/other.wxml-->
-<button type="warn">页面开发中 </button>
+
+<view class='search'>
+  <!--扫码框start-->
+  <button class="scan-button" size="mini" bindtap="deviceCodeScan">
+    <cover-image class="scan-button-image" src="../../images/扫码(1).png"></cover-image>
+  </button>
+  <!--扫码框end-->
+  <!--搜索框start-->
+  <input type='text' placeholder='请输入您要搜索的设备' bindinput='handleInputChange' bindconfirm='getDeviceData' />
+  <icon type='search' class='icons'></icon>
+  <!--搜索框end-->
+  <view wx:for="{{list}}" wx:key='item' class='lists'>
+    <text wx:if="{{item.show}}">{{item.name}}</text>
+  </view>
+</view>
+<view class="device_list">
+  <view class="item" wx:for="{{deviceData}}" wx:key="item">
+    <view class="pic">
+      <image src="{{item.deviceImage}}"></image>
+    </view>
+    <view class="content">
+      <view class="title">{{item.deviceName}}
+      </view>
+      <view class="attr">
+        <view class="sncode">设备识别码：{{item.deviceNo}}</view>
+        <view class="borrower">当前持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
+      </view>
+    </view>
+  </view>
+</view>

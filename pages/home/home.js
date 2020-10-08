@@ -1,6 +1,8 @@
 // pages/home/home.js
 //获取应用实例
 const app = getApp()
+const db = wx.cloud.database()
+const _ = db.command
 
 Page({
 
@@ -11,30 +13,79 @@ Page({
     borrowerName: "",
     borrowerDepartment: " ",
     authorize: false,
-    deviceData: [{}],
-    deviceNoList: []
+    deviceData: [],
+    deviceNoList: [],
+    searchData: [],
+    deviceType: "",
+    checkCode: ""
   },
-
+  //搜索输入框初始数据
+  staticData: {
+    inputValue: ""
+  },
+  //获取搜索框输入
+  handleInputChange(e) {
+    this.staticData.inputValue = e.detail.value;
+  },
   /**
    * 从云数据库获取全部设备信息
-   * 
+   * @param {*} key 搜索框输入的值
    */
   getDeviceData: function () {
     let self = this;
+    let oldData = self.data.deviceData;
     let deviceNo = []
-    const db = wx.cloud.database()
-    db.collection('device_data').get({
-      success: function (res) {
-        for (var i = 0; i < res.data.length; i++) {
-          deviceNo.push(res.data[i].deviceNo);
+    db.collection('device_data')
+      .skip(oldData.length)
+      .get({
+        success: function (res) {
+          for (var i = 0; i < res.data.length; i++) {
+            deviceNo.push(res.data[i].deviceNo);
+          }
+          self.setData({
+            deviceData: oldData.concat(res.data),
+            deviceNoList: deviceNo
+          })
         }
-        self.setData({
-          deviceData: res.data,
-          deviceNoList: deviceNo
-        })
-        console.log(self.data.deviceData)
-        console.log(self.data.deviceNoList)
-      }
+      })
+  },
+  /**
+   * 搜索函数
+   * 
+   */
+  searchDeviceData: function () {
+    let self = this;
+    let key = this.staticData.inputValue;
+    console.log("搜索的内容", key)
+    db.collection('device_data')
+      .where(_.or([{
+        deviceName: db.RegExp({
+          regexp: '.*' + key,
+          options: 'i',
+        }),
+      }]))
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: res.data,
+          })
+        }
+      })
+  },
+
+  /**
+   * 校验扫码数据是否在云端数据库内
+   * @param {*} scancode 扫码获取的值
+   */
+  deviceNoCheck: function (e) {
+    wx.cloud.callFunction({
+      name: "deviceNoCheck",
+      data: {
+        deviceNo: e
+      },
+      success: res => {
+        console.log(res.result.code)
+        }
     })
   },
   /**
@@ -58,7 +109,17 @@ Page({
             success: (res) => {
               var str = res.result;
               console.log(str)
-              if (self.data.deviceNoList.includes(str)) {
+              // wx.cloud.callFunction({
+              //   name: "deviceNoCheck",
+              //   data: {
+              //     deviceNo: str
+              //   },
+              //   success: res => {
+              //     if(res.result.code==200){
+              //     }
+              //     }
+              // })
+              if (self.deviceNoCheck(str)) {
                 wx.showModal({
                   title: '已找到匹配的设备',
                   content: '点击确定键借出设备',
@@ -66,7 +127,6 @@ Page({
                   success(res) {
                     if (res.confirm) {
                       console.log('用户点击确定')
-                      const db = wx.cloud.database();
                       db.collection('device_data').where({
                         deviceNo: str
                       }).update({
@@ -117,8 +177,6 @@ Page({
   onLoad: function (options) {
     var that = this
     this.getDeviceData();
-    const db = wx.cloud.database()
-    const _ = db.command
     const watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
@@ -171,7 +229,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.getDeviceData()
   },
 
   /**

@@ -1,12 +1,13 @@
 {
   "description": "项目配置文件",
+  "cloudfunctionRoot": "cloud/",
   "packOptions": {
     "ignore": []
   },
   "setting": {
     "urlCheck": false,
     "es6": true,
-    "enhance": false,
+    "enhance": true,
     "postcss": true,
     "preloadBackgroundData": false,
     "minified": true,
@@ -46,6 +47,7 @@
   "isGameTourist": false,
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {
     "search": {
       "current": -1,
@@ -88,6 +90,13 @@
           "id": -1,
           "name": "登录页面",
           "pathName": "pages/login/login",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "搜索页面",
+          "pathName": "pages/search/search",
           "scene": null
         }
       ]
