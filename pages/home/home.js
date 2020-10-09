@@ -72,22 +72,6 @@ Page({
         }
       })
   },
-
-  /**
-   * 校验扫码数据是否在云端数据库内
-   * @param {*} scancode 扫码获取的值
-   */
-  deviceNoCheck: function (e) {
-    wx.cloud.callFunction({
-      name: "deviceNoCheck",
-      data: {
-        deviceNo: e
-      },
-      success: res => {
-        console.log(res.result.code)
-        }
-    })
-  },
   /**
    * 扫码函数
    *
@@ -109,18 +93,14 @@ Page({
             success: (res) => {
               var str = res.result;
               console.log(str)
-              // wx.cloud.callFunction({
-              //   name: "deviceNoCheck",
-              //   data: {
-              //     deviceNo: str
-              //   },
-              //   success: res => {
-              //     if(res.result.code==200){
-              //     }
-              //     }
-              // })
-              if (self.deviceNoCheck(str)) {
-                wx.showModal({
+              wx.cloud.callFunction({
+                name: "deviceNoCheck",
+                data: {
+                  deviceNo: str
+                },
+                success: res => {
+                  if(res.result.code==200){
+                      wx.showModal({
                   title: '已找到匹配的设备',
                   content: '点击确定键借出设备',
                   confirmColor: '#9ca9e9',
@@ -152,7 +132,9 @@ Page({
                   confirmColor: '#9ca9e9'
                 });
                 return;
-              }
+                  }
+                  }
+              })
             },
           })
         } else {

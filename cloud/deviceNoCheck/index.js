@@ -23,7 +23,6 @@ exports.main = (event, context) => {
       } else {
         result.code = 404;
         result.body = "未查询到对应设备码"
-        result.body = res;
         resolve(result)
       }
     })
