@@ -13,6 +13,7 @@ Page({
     authorize: false,
     deviceData: [],
     searchData: [],
+
   },
   //搜索输入框初始数据
   staticData: {
@@ -24,9 +25,25 @@ Page({
   },
   /**
    * 从云数据库获取全部设备信息
-   * @param {*} key 搜索框输入的值
+   * 
    */
   loadData: function () {
+    let self = this;
+    db.collection('device_data')
+      .limit(10)
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: res.data,
+          })
+        }
+      })
+  },
+  /**
+   * 上拉触底加载更多设备信息
+   * 
+   */
+  loadMoreData: function () {
     let self = this;
     let oldData = self.data.deviceData;
     db.collection('device_data')
@@ -201,7 +218,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.loadData()
+    this.loadMoreData()
   },
 
   /**
