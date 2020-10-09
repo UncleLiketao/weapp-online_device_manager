@@ -1,1 +1,6 @@
 /* pages/login/login.wxss */
+
+.button-area{
+  display: flex;
+  position: relative;
+ }

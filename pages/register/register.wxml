@@ -5,4 +5,4 @@
 <input  class="inpput" bindinput="getDepartment"></input>
 输入您的密码
 <input class="inpput" bindinput="getPassword"></input>
-<button bindtap="register" type="primary">注册</button>
+<button bindtap="register" type="primary" size="mini">注册</button>

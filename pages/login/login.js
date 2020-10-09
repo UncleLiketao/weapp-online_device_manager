@@ -73,7 +73,12 @@ getName(event) {
       console.log("获取数据失败", res)
     }
   })
-  
+  },
+  //点击注册
+  register(){
+    wx.navigateTo({
+      url: '/pages/register/register',
+    })
   },
   /**
    * 生命周期函数--监听页面加载

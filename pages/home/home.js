@@ -1,11 +1,9 @@
 // pages/home/home.js
-//获取应用实例
-const app = getApp()
+// 初始化数据库
 const db = wx.cloud.database()
 const _ = db.command
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -14,10 +12,7 @@ Page({
     borrowerDepartment: " ",
     authorize: false,
     deviceData: [],
-    deviceNoList: [],
     searchData: [],
-    deviceType: "",
-    checkCode: ""
   },
   //搜索输入框初始数据
   staticData: {
@@ -31,20 +26,15 @@ Page({
    * 从云数据库获取全部设备信息
    * @param {*} key 搜索框输入的值
    */
-  getDeviceData: function () {
+  loadData: function () {
     let self = this;
     let oldData = self.data.deviceData;
-    let deviceNo = []
     db.collection('device_data')
       .skip(oldData.length)
       .get({
         success: function (res) {
-          for (var i = 0; i < res.data.length; i++) {
-            deviceNo.push(res.data[i].deviceNo);
-          }
           self.setData({
             deviceData: oldData.concat(res.data),
-            deviceNoList: deviceNo
           })
         }
       })
@@ -53,7 +43,7 @@ Page({
    * 搜索函数
    * 
    */
-  searchDeviceData: function () {
+  searchData: function () {
     let self = this;
     let key = this.staticData.inputValue;
     console.log("搜索的内容", key)
@@ -157,15 +147,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this
-    this.getDeviceData();
+    let self = this
+    self.loadData();
     const watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
       })
       .watch({
         onChange: function (snapshot) {
-          that.getDeviceData()
+          self.loadData()
         },
         onError: function (err) {
           console.error('the watch closed because of error', err)
@@ -211,7 +201,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.getDeviceData()
+    this.loadData()
   },
 
   /**

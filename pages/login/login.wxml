@@ -3,4 +3,7 @@
 <input class="inpput" bindinput="getName"></input>
 输入您的密码
 <input class="inpput" bindinput="getPassword"></input>
-<button bindtap="login" type="primary">登录</button>
+<view class="button-area">
+  <button bindtap="login" type="primary" size="mini">登录</button>
+  <button bindtap="register" type="primary" size="mini">注册</button>
+</view>

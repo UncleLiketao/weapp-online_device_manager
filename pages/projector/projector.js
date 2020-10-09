@@ -1,9 +1,8 @@
 // pages/home/home.js
-//获取应用实例
-const app = getApp()
+const db = wx.cloud.database()
+const _ = db.command
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -11,8 +10,7 @@ Page({
     borrowerName: "",
     borrowerDepartment: " ",
     authorize: false,
-    deviceData: [{}],
-    deviceNoList: [],
+    deviceData: [],
     searchData: [],
     deviceType: "projector"
   },
@@ -28,34 +26,47 @@ Page({
    * 从云数据库获取全部设备信息
    * @param {*} key 搜索框输入的值
    */
-  getDeviceData: function () {
+  loadData: function () {
     let self = this;
-    let key = this.staticData.inputValue
-    console.log("搜索的内容", key)
-    let deviceNo = []
-    const db = wx.cloud.database()
-    const _ = db.command
-    db.collection('device_data').where(_.or([{
-      deviceName: db.RegExp({
-        regexp: '.*' + key,
-        options: 'i',
-      }),
-      deviceType: self.data.deviceType
-    }])).get({
-      success: function (res) {
-        for (var i = 0; i < res.data.length; i++) {
-          deviceNo.push(res.data[i].deviceNo);
+    let oldData = self.data.deviceData;
+    db.collection('device_data')
+      .where({
+        deviceType: self.data.deviceType
+      })
+      .skip(oldData.length)
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: oldData.concat(res.data),
+          })
         }
-        self.setData({
-          deviceData: res.data,
-          deviceNoList: deviceNo
-        })
-        console.log(self.data.deviceData)
-        console.log(self.data.deviceNoList)
-      }
-    })
+      })
   },
   /**
+   * 搜索函数
+   * 
+   */
+  searchData: function () {
+    let self = this;
+    let key = this.staticData.inputValue;
+    console.log("搜索的内容", key)
+    db.collection('device_data')
+      .where(_.or([{
+        deviceName: db.RegExp({
+          regexp: '.*' + key,
+          options: 'i',
+        }),
+        deviceType: self.data.deviceType
+      }]))
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: res.data,
+          })
+        }
+      })
+  },
+ /**
    * 扫码函数
    *
    */
@@ -76,15 +87,20 @@ Page({
             success: (res) => {
               var str = res.result;
               console.log(str)
-              if (self.data.deviceNoList.includes(str)) {
-                wx.showModal({
+              wx.cloud.callFunction({
+                name: "deviceNoCheck",
+                data: {
+                  deviceNo: str
+                },
+                success: res => {
+                  if(res.result.code==200){
+                      wx.showModal({
                   title: '已找到匹配的设备',
                   content: '点击确定键借出设备',
                   confirmColor: '#9ca9e9',
                   success(res) {
                     if (res.confirm) {
                       console.log('用户点击确定')
-                      const db = wx.cloud.database();
                       db.collection('device_data').where({
                         deviceNo: str
                       }).update({
@@ -110,7 +126,9 @@ Page({
                   confirmColor: '#9ca9e9'
                 });
                 return;
-              }
+                  }
+                  }
+              })
             },
           })
         } else {
@@ -124,26 +142,24 @@ Page({
         wx.navigateTo({
           url: '/pages/login/login',
         })
-
       }
     })
   },
+
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this
-    this.getDeviceData();
-    const db = wx.cloud.database()
-    const _ = db.command
+    let self = this
+    self.loadData();
     const watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
       })
       .watch({
         onChange: function (snapshot) {
-          that.getDeviceData()
+          self.loadData()
         },
         onError: function (err) {
           console.error('the watch closed because of error', err)
