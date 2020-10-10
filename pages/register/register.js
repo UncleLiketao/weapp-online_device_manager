@@ -8,7 +8,7 @@ Page({
     name:'',
     department:'',
     password:'',
-    authorize: 'false'
+    authorize: false
   },
   //获取用户名
   getName(event) {
