@@ -94,6 +94,7 @@ Page({
           borrowerDepartment: res.data["department"],
           authorize: res.data["authorize"]
         })
+        console.log(res.data.authorize)
         if (self.data.authorize) {
           wx.scanCode({
             scanType: ['barcode', 'qrCode'],

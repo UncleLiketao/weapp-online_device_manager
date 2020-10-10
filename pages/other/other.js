@@ -24,9 +24,28 @@ Page({
   },
   /**
    * 从云数据库获取全部设备信息
-   * @param {*} key 搜索框输入的值
+   * 
    */
   loadData: function () {
+    let self = this;
+    db.collection('device_data')
+      .where({
+        deviceType: self.data.deviceType
+      })
+      .limit(10)
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: res.data,
+          })
+        }
+      })
+  },
+  /**
+   * 从云数据库获取全部设备信息
+   * 
+   */
+  loadMoreData: function () {
     let self = this;
     let oldData = self.data.deviceData;
     db.collection('device_data')
@@ -66,7 +85,7 @@ Page({
         }
       })
   },
- /**
+  /**
    * 扫码函数
    *
    */
@@ -93,41 +112,41 @@ Page({
                   deviceNo: str
                 },
                 success: res => {
-                  if(res.result.code==200){
-                      wx.showModal({
-                  title: '已找到匹配的设备',
-                  content: '点击确定键借出设备',
-                  confirmColor: '#9ca9e9',
-                  success(res) {
-                    if (res.confirm) {
-                      console.log('用户点击确定')
-                      db.collection('device_data').where({
-                        deviceNo: str
-                      }).update({
-                        data: {
-                          borrowerName: self.data.borrowerName,
-                          borrowerDepartment: self.data.borrowerDepartment
-                        },
-                        success: function (res) {
-                          console.log(res)
+                  if (res.result.code == 200) {
+                    wx.showModal({
+                      title: '已找到匹配的设备',
+                      content: '点击确定键借出设备',
+                      confirmColor: '#9ca9e9',
+                      success(res) {
+                        if (res.confirm) {
+                          console.log('用户点击确定')
+                          db.collection('device_data').where({
+                            deviceNo: str
+                          }).update({
+                            data: {
+                              borrowerName: self.data.borrowerName,
+                              borrowerDepartment: self.data.borrowerDepartment
+                            },
+                            success: function (res) {
+                              console.log(res)
+                            }
+                          });
+                        } else if (res.cancel) {
+                          console.log('用户点击取消')
                         }
-                      });
-                    } else if (res.cancel) {
-                      console.log('用户点击取消')
-                    }
+                      }
+                    });
+                    return;
+                  } else {
+                    wx.showModal({
+                      title: '借出失败',
+                      content: '未找到匹配的设备',
+                      showCancel: false,
+                      confirmColor: '#9ca9e9'
+                    });
+                    return;
                   }
-                });
-                return;
-              } else {
-                wx.showModal({
-                  title: '借出失败',
-                  content: '未找到匹配的设备',
-                  showCancel: false,
-                  confirmColor: '#9ca9e9'
-                });
-                return;
-                  }
-                  }
+                }
               })
             },
           })
@@ -205,7 +224,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.loadMoreData()
   },
 
   /**
