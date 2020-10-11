@@ -55,7 +55,6 @@
 
 .search{
   display: flex;
-  position: relative;
  }
 .search .scan-button{
   margin-left: 10rpx;

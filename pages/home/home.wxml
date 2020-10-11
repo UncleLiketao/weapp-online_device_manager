@@ -8,7 +8,8 @@
   <!--扫码框end-->
   <!--搜索框start-->
   <input type='text' placeholder='请输入您要搜索的设备' bindinput='handleInputChange' bindconfirm='searchData' />
-  <icon type='search' class='icons'></icon>
+  <!-- <mp-searchbar bindselectresult="handleInputChange" search="{{search}}" placeholder='请输入您要搜索的设备' bindconfirm='searchData'></mp-searchbar> -->
+  <!-- <icon type='search' class='icons'></icon> -->
   <!--搜索框end-->
   <!--设备展示区域start-->
   <view wx:for="{{list}}" wx:key='item' class='lists'>

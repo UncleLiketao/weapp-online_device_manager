@@ -54,7 +54,7 @@ Page({
     if (!/^[\u4e00-\u9fa5]+$/i.test(department)) {
       wx.showToast({
         icon: 'none',
-        title: '部门只能是存汉字',
+        title: '部门只能是汉字',
       })
       return
     }

@@ -1,8 +1,15 @@
 <!--pages/register/register.wxml-->
-输入您的名字
-<input class="inpput" bindinput="getName"></input>
-输入您的部门
-<input  class="inpput" bindinput="getDepartment"></input>
-输入您的密码
-<input class="inpput" bindinput="getPassword"></input>
-<button bindtap="register" type="primary" size="mini">注册</button>
+<mp-cells title="注册">
+  <mp-cell prop="name" title="姓名" ext-class="">
+    <input bindinput="getName" data-field="name" class="weui-input" placeholder="请输入姓名" />
+  </mp-cell>
+  <mp-cell prop="department" title="部门" ext-class="">
+    <input bindinput="getDepartment" data-field="name" class="weui-input" placeholder="请输入部门" />
+  </mp-cell>
+  <mp-cell prop="password" title="密码" ext-class="">
+    <input bindinput="getPassword" data-field="name" class="weui-input" placeholder="请输入密码" />
+  </mp-cell>
+</mp-cells>
+<view class="weui-btn-area">
+  <button class="weui-btn" type="primary" bindtap="register">注册</button>
+</view>
