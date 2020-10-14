@@ -41,6 +41,32 @@ Page({
         }
       })
   },
+  //加载用户授权信息
+  loadUserData: function (e) {
+    let self = this;
+    wx.getStorage({
+      key: 'user',
+      success: function (res) {
+        console.log(res.data["name"])
+        self.setData({
+          borrowerName: res.data["name"]
+        })
+        db.collection('user')
+          .where({
+            name: self.data.borrowerName
+          })
+          .get({
+            success: function (res) {
+              console.log(res)
+              console.log("获取用户数据成功", res.data[0]["authorize"])
+              var _authorize = wx.getStorageSync('user')
+              _authorize.authorize = res.data[0]["authorize"]
+              wx.setStorageSync('user', _authorize)
+            }
+          })
+      }
+    })
+  },
   /**
    * 从云数据库获取全部设备信息
    * 
@@ -172,13 +198,26 @@ Page({
   onLoad: function (options) {
     let self = this
     self.loadData();
-    const watcher = db.collection('device_data')
+    self.loadUserData();
+    const device_watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
       })
       .watch({
         onChange: function (snapshot) {
           self.loadData()
+        },
+        onError: function (err) {
+          console.error('the watch closed because of error', err)
+        }
+      })
+    const user_watcher = db.collection('user')
+      .where({
+        authorize: _.exists(true)
+      })
+      .watch({
+        onChange: function (snapshot) {
+          self.loadUserData();
         },
         onError: function (err) {
           console.error('the watch closed because of error', err)

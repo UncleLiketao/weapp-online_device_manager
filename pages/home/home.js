@@ -39,6 +39,33 @@ Page({
         }
       })
   },
+  //加载用户授权信息
+  loadUserData: function (e) {
+    let self = this;
+    wx.getStorage({
+      key: 'user',
+      success: function (res) {
+        console.log(res.data["name"])
+        self.setData({
+          borrowerName: res.data["name"]
+        })
+        db.collection('user')
+          .where({
+            name: self.data.borrowerName
+          })
+          .get({
+            success: function (res) {
+              console.log(res)
+              console.log("获取用户数据成功", res.data[0]["authorize"])
+              var _authorize = wx.getStorageSync('user')
+              _authorize.authorize = res.data[0]["authorize"]
+              wx.setStorageSync('user', _authorize)
+            }
+          })
+      }
+    })
+
+  },
   /**
    * 上拉触底加载更多设备信息
    * 
@@ -107,41 +134,41 @@ Page({
                   deviceNo: str
                 },
                 success: res => {
-                  if(res.result.code==200){
-                      wx.showModal({
-                  title: '已找到匹配的设备',
-                  content: '点击确定键借出设备',
-                  confirmColor: '#9ca9e9',
-                  success(res) {
-                    if (res.confirm) {
-                      console.log('用户点击确定')
-                      db.collection('device_data').where({
-                        deviceNo: str
-                      }).update({
-                        data: {
-                          borrowerName: self.data.borrowerName,
-                          borrowerDepartment: self.data.borrowerDepartment
-                        },
-                        success: function (res) {
-                          console.log(res)
+                  if (res.result.code == 200) {
+                    wx.showModal({
+                      title: '已找到匹配的设备',
+                      content: '点击确定键借出设备',
+                      confirmColor: '#9ca9e9',
+                      success(res) {
+                        if (res.confirm) {
+                          console.log('用户点击确定')
+                          db.collection('device_data').where({
+                            deviceNo: str
+                          }).update({
+                            data: {
+                              borrowerName: self.data.borrowerName,
+                              borrowerDepartment: self.data.borrowerDepartment
+                            },
+                            success: function (res) {
+                              console.log(res)
+                            }
+                          });
+                        } else if (res.cancel) {
+                          console.log('用户点击取消')
                         }
-                      });
-                    } else if (res.cancel) {
-                      console.log('用户点击取消')
-                    }
+                      }
+                    });
+                    return;
+                  } else {
+                    wx.showModal({
+                      title: '借出失败',
+                      content: '未找到匹配的设备',
+                      showCancel: false,
+                      confirmColor: '#9ca9e9'
+                    });
+                    return;
                   }
-                });
-                return;
-              } else {
-                wx.showModal({
-                  title: '借出失败',
-                  content: '未找到匹配的设备',
-                  showCancel: false,
-                  confirmColor: '#9ca9e9'
-                });
-                return;
-                  }
-                  }
+                }
               })
             },
           })
@@ -167,7 +194,8 @@ Page({
   onLoad: function (options) {
     let self = this
     self.loadData();
-    const watcher = db.collection('device_data')
+    self.loadUserData();
+    const device_watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
       })
@@ -179,6 +207,19 @@ Page({
           console.error('the watch closed because of error', err)
         }
       })
+    const user_watcher = db.collection('user')
+      .where({
+        authorize: _.exists(true)
+      })
+      .watch({
+        onChange: function (snapshot) {
+          self.loadUserData();
+        },
+        onError: function (err) {
+          console.error('the watch closed because of error', err)
+        }
+      })
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
