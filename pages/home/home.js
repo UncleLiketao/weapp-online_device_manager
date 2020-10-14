@@ -64,7 +64,6 @@ Page({
           })
       }
     })
-
   },
   /**
    * 上拉触底加载更多设备信息
@@ -219,7 +218,6 @@ Page({
           console.error('the watch closed because of error', err)
         }
       })
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
