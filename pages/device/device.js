@@ -1,4 +1,5 @@
 // pages/home/home.js
+// 初始化数据库
 const db = wx.cloud.database()
 const _ = db.command
 
@@ -12,7 +13,6 @@ Page({
     authorize: false,
     deviceData: [],
     searchData: [],
-    deviceType: "projector"
   },
   //搜索输入框初始数据
   staticData: {
@@ -29,9 +29,6 @@ Page({
   loadData: function () {
     let self = this;
     db.collection('device_data')
-      .where({
-        deviceType: self.data.deviceType
-      })
       .limit(10)
       .get({
         success: function (res) {
@@ -68,16 +65,13 @@ Page({
     })
   },
   /**
-   * 从云数据库获取全部设备信息
+   * 上拉触底加载更多设备信息
    * 
    */
   loadMoreData: function () {
     let self = this;
     let oldData = self.data.deviceData;
     db.collection('device_data')
-      .where({
-        deviceType: self.data.deviceType
-      })
       .skip(oldData.length)
       .get({
         success: function (res) {
@@ -101,7 +95,6 @@ Page({
           regexp: '.*' + key,
           options: 'i',
         }),
-        deviceType: self.data.deviceType
       }]))
       .get({
         success: function (res) {
@@ -126,6 +119,7 @@ Page({
           borrowerDepartment: res.data["department"],
           authorize: res.data["authorize"]
         })
+        console.log(res.data.authorize)
         if (self.data.authorize) {
           wx.scanCode({
             scanType: ['barcode', 'qrCode'],
@@ -187,10 +181,10 @@ Page({
         wx.navigateTo({
           url: '/pages/login/login',
         })
+
       }
     })
   },
-
 
   /**
    * 生命周期函数--监听页面加载

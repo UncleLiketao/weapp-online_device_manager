@@ -1,21 +1,50 @@
 <!--pages/home/home.wxml-->
-
-<view class='search'>
-  <!--扫码框start-->
-  <button class="scan-button" size="mini" bindtap="deviceCodeScan">
-    <cover-image class="scan-button-image" src="../../images/扫码(1).png"></cover-image>
-  </button>
-  <!--扫码框end-->
-  <!--搜索框start-->
-  <input type='text' placeholder='请输入您要搜索的设备' bindinput='handleInputChange' bindconfirm='searchData' />
-  <!-- <mp-searchbar bindselectresult="handleInputChange" search="{{search}}" placeholder='请输入您要搜索的设备' bindconfirm='searchData'></mp-searchbar> -->
-  <!-- <icon type='search' class='icons'></icon> -->
-  <!--搜索框end-->
-  <!--设备展示区域start-->
+ <!--搜索框start-->
+<view class='page_row' bindtap="suo">
+    <view class="search">
+        <view class="df search_arr">
+            <icon class="searchcion" size='16' type='search'></icon>
+            <input class="sousuo" disabled placeholder="搜索" bindtap='search' />
+        </view>
+    </view>
+</view>
+ <!--搜索框end-->
+ <!--功能宫格start-->
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-grids">
+            <block>
+                <navigator url="/pages/login/login" class="weui-grid" hover-class="weui-grid_active">
+                    <image class="weui-grid__icon" src="/images/帐号登录.png" />
+                    <view class="weui-grid__label">帐号登录</view>
+                </navigator>
+            </block>
+            <block>
+                <navigator url="/pages/device/device" class="weui-grid" hover-class="weui-grid_active">
+                    <image class="weui-grid__icon" src="/images/全部设备.png" />
+                    <view class="weui-grid__label">全部设备</view>
+                </navigator>
+            </block>
+            <block>
+                <navigator url="" class="weui-grid" hover-class="weui-grid_active">
+                    <image class="weui-grid__icon" src="/images/设备上传.png" />
+                    <view class="weui-grid__label">设备上传</view>
+                </navigator>
+            </block>
+        </view>
+    </view>
+</view>
+<!--功能宫格end-->
+ <!--扫码借机按钮start-->
+<view class="btn">
+    <button type="primary" size="default">扫码借机</button>
+</view>
+<view>
   <view wx:for="{{list}}" wx:key='item' class='lists'>
     <text wx:if="{{item.show}}">{{item.name}}</text>
   </view>
 </view>
+ <!--扫码借机按钮end-->
 <view class="device_list">
   <view class="item" wx:for="{{deviceData}}" wx:key="item">
     <view class="pic">

@@ -1,4 +1,4 @@
-/* pages/projector/projector.wxss */
+/* pages/device/device.wxss *//* pages/home/home.wxss */
 
 .device_list .item {
   display: flex;
@@ -55,7 +55,6 @@
 
 .search{
   display: flex;
-  position: relative;
  }
 .search .scan-button{
   margin-left: 10rpx;
