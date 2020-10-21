@@ -1,6 +1,17 @@
 <!--pages/search/search.wxml-->
-<view class="page">
-    <view class="page__bd">
-        <mp-searchbar bindselectresult="selectResult" search="{{search}}"></mp-searchbar>
-    </view>
+<!--搜索框start-->
+<view class="search">
+    <icon type='search' class='icons'></icon>
+    <input type='text' placeholder='请输入您要搜索的设备' bindinput='handleInputChange' bindconfirm='searchData' />
 </view>
+<!--搜索框end-->
+<!--设备展示区域start-->
+<scroll-view scroll-y="true" scroll-top="0" class="devices-container">
+    <view class="devices" wx:for="{{deviceData}}" wx:key="item">
+        <image class='pic' src="{{item.deviceImage}}"></image>
+        <view class="name ellipsis">{{item.deviceName}}</view>
+        <view class="sncode">设备码：{{item.deviceNo}}</view>
+        <view class="borrower">持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
+    </view>
+</scroll-view>
+<!--设备展示区域end-->

@@ -9,15 +9,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-    borrowerName: "",
-    borrowerDepartment: " ",
+    userName: "",
+    userDpt: " ",
     authorize: false,
     deviceData: [],
   },
   //跳转到搜索页面
-  search: function () {
+  goSearch: function () {
     wx.navigateTo({
       url: '/pages/search/search'
+    })
+  },
+  //跳转到登录页面
+  goLogin: function () {
+    wx.navigateTo({
+      url: '/pages/login/login'
     })
   },
   /**
@@ -37,11 +43,137 @@ Page({
       })
   },
   /**
+   * 上拉触底加载更多设备信息
+   * 
+   */
+  loadMoreData: function () {
+    let self = this;
+    let oldData = self.data.deviceData;
+    db.collection('device_data')
+      .skip(oldData.length)
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: oldData.concat(res.data),
+          })
+        }
+      })
+  },
+  //加载用户授权信息
+  loadUserData: function (e) {
+    let self = this;
+    wx.getStorage({
+      key: 'user',
+      success: function (res) {
+        console.log(res.data["name"])
+        self.setData({
+          userName: res.data["name"]
+        })
+        db.collection('user')
+          .where({
+            name: self.data.userName
+          })
+          .get({
+            success: function (res) {
+              console.log(res)
+              console.log("获取用户数据成功", res.data[0]["authorize"])
+              var _authorize = wx.getStorageSync('user')
+              _authorize.authorize = res.data[0]["authorize"]
+              wx.setStorageSync('user', _authorize)
+            }
+          })
+      }
+    })
+  },
+  /**
+   * 扫码函数
+   *
+   */
+  deviceCodeScan: function (e) {
+    let self = this;
+    wx.getStorage({
+      key: 'user',
+      success(res) {
+        console.log(res.data)
+        self.setData({
+          userName: res.data["name"],
+          userDpt: res.data["department"],
+          authorize: res.data["authorize"]
+        })
+        console.log(res.data.authorize)
+        if (self.data.authorize) {
+          wx.scanCode({
+            scanType: ['barcode', 'qrCode'],
+            success: (res) => {
+              var str = res.result;
+              console.log(str)
+              wx.cloud.callFunction({
+                name: "deviceNoCheck",
+                data: {
+                  deviceNo: str
+                },
+                success: res => {
+                  if (res.result.code == 200) {
+                    wx.showModal({
+                      title: '已找到匹配的设备',
+                      content: '点击确定键借出设备',
+                      confirmColor: '#9ca9e9',
+                      success(res) {
+                        if (res.confirm) {
+                          console.log('用户点击确定')
+                          db.collection('device_data').where({
+                            deviceNo: str
+                          }).update({
+                            data: {
+                              borrowerName: self.data.userName,
+                              borrowerDepartment: self.data.userDpt
+                            },
+                            success: function (res) {
+                              console.log(res)
+                            }
+                          });
+                        } else if (res.cancel) {
+                          console.log('用户点击取消')
+                        }
+                      }
+                    });
+                    return;
+                  } else {
+                    wx.showModal({
+                      title: '借出失败',
+                      content: '未找到匹配的设备',
+                      showCancel: false,
+                      confirmColor: '#9ca9e9'
+                    });
+                    return;
+                  }
+                }
+              })
+            },
+          })
+        } else {
+          wx.showToast({
+            icon: 'none',
+            title: '当前账户未授权，请联系管理员',
+          })
+        }
+      },
+      fail(res) {
+        wx.navigateTo({
+          url: '/pages/login/login',
+        })
+
+      }
+    })
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let self = this
     self.loadData();
+    self.loadUserData();
     const device_watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
@@ -49,6 +181,18 @@ Page({
       .watch({
         onChange: function (snapshot) {
           self.loadData()
+        },
+        onError: function (err) {
+          console.error('the watch closed because of error', err)
+        }
+      })
+    const user_watcher = db.collection('user')
+      .where({
+        authorize: _.exists(true)
+      })
+      .watch({
+        onChange: function (snapshot) {
+          self.loadUserData();
         },
         onError: function (err) {
           console.error('the watch closed because of error', err)
@@ -82,7 +226,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    
   },
 
   /**
@@ -96,7 +240,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.loadMoreData()
   },
 
   /**

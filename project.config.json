@@ -49,12 +49,6 @@
   "simulatorPluginLibVersion": {},
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
     "plugin": {
       "list": []
     },
@@ -67,8 +61,7 @@
     "miniprogram": {
       "list": [
         {
-          "id": -1,
-          "name": "pages/home/home",
+          "name": "首页",
           "pathName": "pages/home/home",
           "query": "",
           "scene": null
@@ -88,9 +81,15 @@
           "scene": null
         },
         {
-          "id": -1,
           "name": "搜索页面",
           "pathName": "pages/search/search",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "我的",
+          "pathName": "pages/profile/profile",
+          "query": "",
           "scene": null
         }
       ]

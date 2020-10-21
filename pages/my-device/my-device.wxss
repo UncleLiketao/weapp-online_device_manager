@@ -1,26 +1,4 @@
-/* pages/search/search.wxss */
-.search{
-  display: flex;
- }
- .search input{
-  border:1px solid #ccc;
-  border-radius: 6px;
-  height: 33px;
-  margin-left: 20rpx;
-  margin-right: 20rpx;
-  width: 100%;
- }
- .icons{
-  position: absolute;
-  right: 20px;
-  top:5px;
- }
- .lists{
-  text-align: center;
-  margin-top: 20px;
-  color: rgb(230, 124, 25);
- }
-
+/* pages/my-device/my-device.wxss */
 /* 设备栏wxss*/
 .devices-container {
   flex: 1;

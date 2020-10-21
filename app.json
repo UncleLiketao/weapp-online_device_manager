@@ -2,10 +2,11 @@
   "pages": [
     "pages/home/home",
     "pages/search/search",
-    "pages/device/device",
     "pages/profile/profile",
     "pages/register/register",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/my-device/my-device",
+    "pages/borrowed-device/borrowed-device"
   ],
   "window": {
     "backgroundTextStyle": "light",
