@@ -6,7 +6,8 @@
     "pages/register/register",
     "pages/login/login",
     "pages/my-device/my-device",
-    "pages/borrowed-device/borrowed-device"
+    "pages/borrowed-device/borrowed-device",
+    "pages/my-borrowed-device/my-borrowed-device"
   ],
   "window": {
     "backgroundTextStyle": "light",

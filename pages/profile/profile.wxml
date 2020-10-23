@@ -16,9 +16,16 @@
   </view>
 </navigator>
 <view class="line"></view>
+<navigator url="/pages/my-borrowed-device/my-borrowed-device">
+  <view class="menu-item">
+    <view class="l">我借的设备</view>
+    <image class="next" src="/images/next.png"></image>
+  </view>
+</navigator>
+<view class="line"></view>
 <navigator url="/pages/borrowed-device/borrowed-device">
   <view class="menu-item">
-    <view class="l">借出设备</view>
+    <view class="l">借出的设备</view>
     <image class="next" src="/images/next.png"></image>
   </view>
 </navigator>

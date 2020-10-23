@@ -1,0 +1,13 @@
+<!--pages/my-borrowed-device/my-borrowed-device.wxml-->
+<!--pages/my-device/my-device.wxml-->
+<!--设备展示区域start-->
+<scroll-view scroll-y="true" scroll-top="0" class="devices-container">
+    <view class="devices" wx:for="{{deviceData}}" wx:key="item">
+      <image class='pic' src="{{item.deviceImage}}"></image>
+      <view class="name ellipsis">{{item.deviceName}}</view>
+      <view class="sncode">设备码：{{item.deviceNo}}</view>
+      <view class="borrower">持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
+    </view>
+  </scroll-view>
+  <!--设备展示区域end-->
+
