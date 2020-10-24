@@ -91,6 +91,12 @@
           "pathName": "pages/profile/profile",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "设备上传页",
+          "pathName": "pages/device-upload/device-upload",
+          "query": "",
+          "scene": null
         }
       ]
     }
