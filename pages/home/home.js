@@ -26,6 +26,12 @@ Page({
       url: '/pages/login/login'
     })
   },
+  //跳转到登录页面
+  goDeviceUpload: function () {
+    wx.navigateTo({
+      url: '/pages/device-upload/device-upload'
+    })
+  },
   /**
    * 从云数据库获取全部设备信息
    * 

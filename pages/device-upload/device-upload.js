@@ -5,6 +5,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    deviceTypes: ["投影仪", "手机", "笔记本电脑", "配件"],
+    deviceTypeIndex: 0,
+  },
+  methods: {
+    bindDeviceTypeChange: function (e) {
+      console.log('picker deviceType 发生选择改变，携带值为', e.detail.value);
+      this.setData({
+        deviceTypeIndex: e.detail.value
+      })
+    },
 
   },
 

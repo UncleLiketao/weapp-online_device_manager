@@ -1,29 +1,34 @@
 <!--pages/device-upload/device-upload.wxml-->
-<mp-cells title="设备信息">
-  <mp-cell prop="deviceName" title="设备名称" ext-class="">
-    <input bindinput="getDeviceName" data-field="deviceName" class="weui-input" placeholder="请输入设备名称" />
-  </mp-cell>
-  <view class="weui-cell weui-cell_select">
-    <view class="weui-cell__bd">
-      <picker bindchange="bindAccountChange" value="{{accountIndex}}" range="{{accounts}}">
-        <view class="weui-select">{{accounts[accountIndex]}}</view>
-      </picker>
+<mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+<mp-form id="form" rules="{{rules}}" models="{{formData}}">
+  <mp-cells title="设备信息">
+    <mp-cell prop="deviceName" title="设备名称" ext-class="">
+      <input bindinput="getDeviceName" data-field="deviceName" class="weui-input" placeholder="请输入设备名称" />
+    </mp-cell>
+    <view class="weui-cell weui-cell_select">
+      <view class="weui-cell__hd" style="width: 105px">
+        <view class="weui-label">设备类型</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker bindchange="bindDeviceTypeChange" value="{{deviceTypeIndex}}" range="{{deviceTypes}}">
+          <view class="weui-select weui-select_in-select-after">{{deviceTypes[deviceTypeIndex]}}</view>
+        </picker>
+      </view>
     </view>
-  </view>
-  <mp-cell prop="deviceNo" title="设备码" ext-class="">
-    <input bindinput="getDeviceNo" data-field="deviceNo" class="weui-input" placeholder="请输入设备码" />
-  </mp-cell>
-  <mp-cell prop="snCode" title="SN码" ext-class="">
-    <input bindinput="getSnCode" data-field="snCode" class="weui-input" placeholder="请输入设备SN码" />
-  </mp-cell>
-  <mp-cell prop="owner" title="设备主人" ext-class="">
-    <input bindinput="getOwner" data-field="owner" class="weui-input" placeholder="请输入设备主人" />
-  </mp-cell>
-  <mp-cell prop="borrowerName" title="持有人" ext-class="">
-    <input bindinput="getBorrowerName" data-field="borrowerName" class="weui-input" placeholder="请输入设备持有人" />
-  </mp-cell>
-  <mp-cell prop="borrowerDepartment" title="持有人部门" ext-class="">
-    <input bindinput="getBorrowerDepartment" data-field="borrowerDepartment" class="weui-input"
-      placeholder="请输入持有人部门" />
-  </mp-cell>
-</mp-cells>
+    <mp-cell prop="deviceNo" title="序列号" ext-class="">
+      <input bindinput="getDeviceNo" data-field="deviceNo" class="weui-input" placeholder="请输入设备序列号" />
+    </mp-cell>
+    <mp-cell prop=" assestNo" title="资产号" ext-class="">
+      <input bindinput="getAssestNo" data-field="deviceNo" class="weui-input" placeholder="请输入设备资产号" />
+    </mp-cell>
+    <mp-cell prop="snCode" title="SN码" ext-class="">
+      <input bindinput="getSnCode" data-field="snCode" class="weui-input" placeholder="请输入设备SN码" />
+    </mp-cell>
+    <mp-cell prop="owner" title="设备所有者" ext-class="">
+      <input bindinput="getOwner" data-field="owner" class="weui-input" placeholder="请输入设备所有者" />
+    </mp-cell>
+  </mp-cells>
+</mp-form>
+<view class="weui-btn-area">
+  <button class="weui-btn" type="primary" bindtap="submitForm">提交</button>
+</view>

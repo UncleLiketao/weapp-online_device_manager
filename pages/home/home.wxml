@@ -19,7 +19,7 @@
     <image class="icon" src="/images/code_scan.png" background-size="cover"></image>
     <view class='text'>扫码借机</view>
   </view>
-  <view class='item'>
+  <view class='item' bindtap='goDeviceUpload'>
     <image class="icon" src="/images/device_upload.png" background-size="cover"></image>
     <view class='text'>设备上传</view>
   </view>
