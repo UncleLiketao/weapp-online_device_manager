@@ -9,6 +9,37 @@ Page({
    * 页面的初始数据
    */
   data: {
+    deviceTypes: [{
+        "id": "all",
+        "name": "全部设备"
+      },
+      {
+        "id": "projector",
+        "name": "投影仪"
+      },
+      {
+        "id": "phone",
+        "name": "移动设备"
+      },
+      {
+        "id": "laptop",
+        "name": "笔记本"
+      },
+      {
+        "id": "router",
+        "name": "路由器"
+      },
+      {
+        "id": "accessory",
+        "name": "配件"
+      },
+    ],
+    deviceTypeSelected: {
+      name: '全部设备',
+      id: 'all'
+    },
+    onLoadStatus: true,
+    scrolltop: 0,
     userName: "",
     userDpt: " ",
     authorize: false,
@@ -32,38 +63,87 @@ Page({
       url: '/pages/device-upload/device-upload'
     })
   },
+  //设备类别选择
+  onDeviceTypeClick: function (e) {
+    var that = this;
+    var id = e.target.dataset.id;
+    console.log(e)
+    console.log(id)
+    console.log(that.data.deviceTypeSelected.id)
+    if (id === that.data.deviceTypeSelected.id) {
+      that.setData({
+        scrolltop: 0,
+      })
+    } else {
+      that.setData({
+        deviceTypeSelected: {
+          id: id
+        },
+        scrolltop: 0
+      })
+      that.loadData(id)
+    }
+  },
   /**
    * 从云数据库获取全部设备信息
    * 
    */
-  loadData: function () {
+  loadData: function (e) {
     let self = this;
+    if(e==='all'){
     db.collection('device_data')
-      .limit(10)
       .get({
         success: function (res) {
           self.setData({
             deviceData: res.data,
           })
         }
+      });
+    }else{
+      db.collection('device_data')
+      .where({
+        deviceType: e
       })
+      .get({
+        success: function (res) {
+          self.setData({
+            deviceData: res.data,
+          })
+        }
+      });
+    }
   },
   /**
    * 上拉触底加载更多设备信息
    * 
    */
-  loadMoreData: function () {
+  loadMoreData: function (e) {
     let self = this;
     let oldData = self.data.deviceData;
-    db.collection('device_data')
-      .skip(oldData.length)
-      .get({
-        success: function (res) {
-          self.setData({
-            deviceData: oldData.concat(res.data),
+      if(e==='all'){
+        db.collection('device_data')
+          .skip(oldData.length)
+          .get({
+            success: function (res) {
+              self.setData({
+                deviceData: oldData.concat(res.data),
+              })
+            }
+          });
+        }else{
+          db.collection('device_data')
+          .where({
+            deviceType: e
           })
+          .skip(oldData.length)
+          .get({
+            success: function (res) {
+              self.setData({
+                deviceData: oldData.concat(res.data),
+              })
+            }
+          });
         }
-      })
   },
   //加载用户授权信息
   loadUserData: function (e) {
@@ -218,7 +298,22 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    try {
+      var value = wx.getStorageSync('user')
+      console.log(value)
+      if (value) {
+        console.log("用户信息缓存存在")
+        this.setData({
+          auth: true
+        })
+      } else {
+        this.setData({
+          auth: false
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   /**
@@ -232,7 +327,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    
+
   },
 
   /**

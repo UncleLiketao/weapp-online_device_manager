@@ -11,7 +11,11 @@
 <!--搜索框end-->
 <!--功能快捷方式start-->
 <view class='function-shortcut'>
-  <view class='item' bindtap='goLogin'>
+  <view wx:if="{{auth}}" class='item'>
+    <image class="icon" src="../../images/avatar.png" background-size="cover"></image>
+    <view class='text'>{{userName}}</view>
+  </view>
+  <view wx:else class='item' bindtap='goLogin'>
     <image class="icon" src="../../images/account_login.png" background-size="cover"></image>
     <view class='text'>帐号登录</view>
   </view>
@@ -27,25 +31,10 @@
 <!--功能快捷方式end-->
 <view class='content-container'>
   <!--设备类别选择start-->
-  <scroll-view class="category-container">
-    <view class="category active">
-      <view class="name active">全部设备</view>
+  <scroll-view class="deviceType-container">
+    <view  class="deviceType {{deviceTypeSelected.id==item.id?'active':''}}" wx:for="{{deviceTypes}}" wx:key="item" data-id="{{item.id}}" bindtap="onDeviceTypeClick">
+      <view class="name {{deviceTypeSelected.id==item.id?'active':''}}">{{item.name}}</view>
     </view>
-    <!-- <view class="category">
-      <view class="name">投影仪</view>
-    </view>
-    <view class="category">
-      <view class="name">手机</view>
-    </view>
-    <view class="category">
-      <view class="name">笔记本</view>
-    </view>
-    <view class="category">
-      <view class="name">路由器</view>
-    </view>
-    <view class="category">
-      <view class="name">U盘</view>
-    </view> -->
   </scroll-view>
   <!--设备类别选择end-->
   <!--设备展示区域start-->
@@ -53,7 +42,7 @@
     <view class="devices" wx:for="{{deviceData}}" wx:key="item">
       <image class='pic' src="{{item.deviceImage}}"></image>
       <view class="name ellipsis">{{item.deviceName}}</view>
-      <view class="sncode">设备码：{{item.deviceNo}}</view>
+      <view class="sncode">序列号：{{item.deviceNo}}</view>
       <view class="borrower">持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
     </view>
   </scroll-view>
