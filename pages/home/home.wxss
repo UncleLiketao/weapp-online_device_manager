@@ -77,26 +77,26 @@ page {
   display: flex;
 }
 
-.category-container .category.active {
+.deviceType-container .deviceType.active {
   border-left: 4rpx solid #d81e06;
 }
 
-.category-container .category .name.active {
+.deviceType-container .deviceType .name.active {
   color: #d81e06;
   font-weight: bold;
 }
 
-.category-container {
+.deviceType-container {
   width: 180rpx;
   height: 100%;
 }
 
-.category-container .category {
+.deviceType-container .deviceType {
   padding: 30rpx 0rpx;
   text-align: center;
 }
 
-.category-container .category .name {
+.deviceType-container .deviceType .name {
   display: inline-block;
   font-size: 28rpx;
   color: #646464;
