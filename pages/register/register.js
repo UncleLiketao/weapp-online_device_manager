@@ -6,37 +6,42 @@ Page({
    */
   data: {
     showTopTips: false,
-    name:'',
-    department:'',
-    password:'',
-    authorize: false
+    name: '',
+    password: '',
+    authorize: false,
+
+    department: ["软件测试部", "GMUI研发部", "中台研发部", "终端研发部", "项目管理部", "用户发展中心","硬件结构部"],
+    departmentIndex: 0
+
   },
+
   //获取用户名
   getName(event) {
     console.log('获取输入的用户名', event.detail.value)
     this.setData({
       name: event.detail.value
     })
-    },
-    //获取部门
-    getDepartment(event) {
-    console.log('获取输入的账号', event.detail.value)
+  },
+  //获取部门
+  bindDepartmentChange: function (e) {
+    console.log('picker department 发生选择改变，携带值为', e.detail.value);
+
     this.setData({
-      department: event.detail.value
+      departmentIndex: e.detail.value
     })
-    },
-    // 获取密码
-    getPassword(event) {
+  },
+  // 获取密码
+  getPassword(event) {
     console.log('获取输入的密码', event.detail.value)
     this.setData({
       password: event.detail.value
     })
-    },
-    
-    //注册
-    register() {
+  },
+
+  //注册
+  register() {
     let name = this.data.name
-    let department = this.data.department
+    let department = this.data.department[this.data.departmentIndex]
     let password = this.data.password
     let authorize = this.data.authorize
     console.log("点击了注册")
@@ -48,14 +53,6 @@ Page({
       wx.showToast({
         icon: 'none',
         title: '姓名只能是纯汉字',
-      })
-      return
-    }
-    //校验账号
-    if (!/^[\u4e00-\u9fa5]+$/i.test(department)) {
-      wx.showToast({
-        icon: 'none',
-        title: '部门只能是汉字',
       })
       return
     }
