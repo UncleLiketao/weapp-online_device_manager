@@ -1,17 +1,25 @@
 <!--pages/register/register.wxml-->
-<mp-form id="form" rules="{{rules}}" models="{{formData}}">
 <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
-<mp-cells title="注册">
-  <mp-cell prop="name" title="姓名" ext-class="">
-    <input bindinput="getName" data-field="name" class="weui-input" placeholder="请输入姓名" />
-  </mp-cell>
-  <mp-cell prop="department" title="部门" ext-class="">
-    <input bindinput="getDepartment" data-field="name" class="weui-input" placeholder="请输入部门" />
-  </mp-cell>
-  <mp-cell prop="password" title="密码" ext-class="">
-    <input bindinput="getPassword" data-field="name" class="weui-input" placeholder="请输入密码" />
-  </mp-cell>
-</mp-cells>
+<mp-form id="form" rules="{{rules}}" models="{{formData}}">
+  <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+  <mp-cells title="注册">
+    <mp-cell prop="name" title="姓名" ext-class="">
+      <input bindinput="getName" data-field="name" class="weui-input" placeholder="请输入姓名" />
+    </mp-cell>
+    <view class="weui-cell weui-cell_select">
+      <view class="weui-cell">
+        <view class="weui-label">部门</view>
+      </view>
+      <view class="weui-cell__bd">
+        <picker bindchange="bindDepartmentChange" value="{{departmentIndex}}" range="{{department}}">
+          <view class="weui-select weui-select_in-select-after">{{department[departmentIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+    <mp-cell prop="password" title="密码" ext-class="">
+      <input bindinput="getPassword" data-field="name" class="weui-input" placeholder="请输入密码" />
+    </mp-cell>
+  </mp-cells>
 </mp-form>
 <view class="weui-btn-area">
   <button class="weui-btn" type="primary" bindtap="register">注册</button>
