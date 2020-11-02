@@ -257,9 +257,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     let self = this
     self.loadData();
     self.loadUserData();
+    wx.hideLoading()
     const device_watcher = db.collection('device_data')
       .where({
         deviceNo: _.exists(true)
@@ -300,7 +304,6 @@ Page({
   onShow: function () {
     try {
       var value = wx.getStorageSync('user')
-      console.log(value)
       if (value) {
         console.log("用户信息缓存存在")
         this.setData({
