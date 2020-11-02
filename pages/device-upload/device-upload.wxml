@@ -6,7 +6,7 @@
       <input bindinput="getDeviceName" data-field="deviceName" class="weui-input" placeholder="请输入设备名称" />
     </mp-cell>
     <view class="weui-cell weui-cell_select">
-      <view class="weui-cell__hd" style="width: 105px">
+      <view class="weui-cell" style="width: 105px">
         <view class="weui-label">设备类型</view>
       </view>
       <view class="weui-cell__bd">

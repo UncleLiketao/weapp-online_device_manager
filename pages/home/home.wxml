@@ -32,13 +32,19 @@
 <view class='content-container'>
   <!--设备类别选择start-->
   <scroll-view class="deviceType-container">
-    <view  class="deviceType {{deviceTypeSelected.id==item.id?'active':''}}" wx:for="{{deviceTypes}}" wx:key="item" data-id="{{item.id}}" bindtap="onDeviceTypeClick">
+    <view class="deviceType {{deviceTypeSelected.id==item.id?'active':''}}" wx:for="{{deviceTypes}}" wx:key="item"
+      data-id="{{item.id}}" bindtap="onDeviceTypeClick">
       <view class="name {{deviceTypeSelected.id==item.id?'active':''}}">{{item.name}}</view>
     </view>
   </scroll-view>
   <!--设备类别选择end-->
   <!--设备展示区域start-->
   <scroll-view scroll-y="true" scroll-top="0" class="devices-container">
+    <view wx:if="{{!deviceData}}" class="no-data">
+      <view class="line"></view>
+      <view class="txt">暂无商品</view>
+      <view class="line"></view>
+    </view>
     <view class="devices" wx:for="{{deviceData}}" wx:key="item">
       <image class='pic' src="{{item.deviceImage}}"></image>
       <view class="name ellipsis">{{item.deviceName}}</view>
