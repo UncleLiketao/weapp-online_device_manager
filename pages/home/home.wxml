@@ -12,19 +12,19 @@
 <!--功能快捷方式start-->
 <view class='function-shortcut'>
   <view wx:if="{{auth}}" class='item'>
-    <image class="icon" src="../../images/avatar.png" background-size="cover"></image>
+    <image class="icon" src="../../icons/avatar.png" background-size="cover"></image>
     <view class='text'>{{userName}}</view>
   </view>
   <view wx:else class='item' bindtap='goLogin'>
-    <image class="icon" src="../../images/account_login.png" background-size="cover"></image>
+    <image class="icon" src="../../icons/account_login.png" background-size="cover"></image>
     <view class='text'>帐号登录</view>
   </view>
   <view class='item' bindtap='deviceCodeScan'>
-    <image class="icon" src="/images/code_scan.png" background-size="cover"></image>
+    <image class="icon" src="/icons/code_scan.png" background-size="cover"></image>
     <view class='text'>扫码借机</view>
   </view>
   <view class='item' bindtap='goDeviceUpload'>
-    <image class="icon" src="/images/device_upload.png" background-size="cover"></image>
+    <image class="icon" src="/icons/device_upload.png" background-size="cover"></image>
     <view class='text'>设备上传</view>
   </view>
 </view>
