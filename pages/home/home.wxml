@@ -13,6 +13,7 @@
 <view class='function-shortcut'>
   <view wx:if="{{auth}}" class='item'>
     <image class="icon" src="../../icons/avatar.png" background-size="cover"></image>
+    <!-- <image class="icon iconfont icon-robot" background-size="cover"></image> -->
     <view class='text'>{{userName}}</view>
   </view>
   <view wx:else class='item' bindtap='goLogin'>
