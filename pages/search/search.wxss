@@ -1,19 +1,22 @@
 /* pages/search/search.wxss */
 .search{
-  display: flex;
+  height: 90rpx;
+  padding: 10rpx;
+  background-color: var(--themeColor);
  }
  .search input{
-  border:1px solid #ccc;
-  border-radius: 6px;
-  height: 33px;
-  margin-left: 20rpx;
-  margin-right: 20rpx;
-  width: 100%;
+  font-family:"Microsoft Yahei";
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 15rpx;
  }
  .icons{
   position: absolute;
-  right: 20px;
-  top:5px;
+  right: 20rpx;
+  top:25rpx;
  }
  .lists{
   text-align: center;

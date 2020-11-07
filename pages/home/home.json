@@ -7,7 +7,8 @@
     "mp-checkbox": "/miniprogram_npm/weui-miniprogram/checkbox/checkbox",
     "mp-checkbox-group": "/miniprogram_npm/weui-miniprogram/checkbox-group/checkbox-group",
     "mp-form": "/miniprogram_npm/weui-miniprogram/form/form",
-    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading"
+    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading",
+    "SearchInput":"../../components/SearchInput/SearchInput"
   },
   "navigationBarTitleText": "首页"
 }

@@ -1,57 +1,46 @@
 <!--pages/home/home.wxml-->
-<!--搜索框start-->
-<view class='page_row' bindtap="suo">
-  <view class="search">
-    <view class="df search_arr">
-      <icon class="searchcion" size='16' type='search'></icon>
-      <input class="sousuo" disabled placeholder="搜索" bindtap='goSearch' />
+<view class="home">
+  <!--搜索框start-->
+  <SearchInput></SearchInput>
+  <!--搜索框end-->
+  <view class='function-shortcut'>
+    <!--功能快捷方式start-->
+    <view wx:if="{{auth}}" class='item'>
+      <image class="icon" src="../../icons/avatar.png" background-size="cover"></image>
+      <view class='text'>{{userName}}</view>
     </view>
-  </view>
-</view>
-<!--搜索框end-->
-<!--功能快捷方式start-->
-<view class='function-shortcut'>
-  <view wx:if="{{auth}}" class='item'>
-    <image class="icon" src="../../icons/avatar.png" background-size="cover"></image>
-    <!-- <image class="icon iconfont icon-robot" background-size="cover"></image> -->
-    <view class='text'>{{userName}}</view>
-  </view>
-  <view wx:else class='item' bindtap='goLogin'>
-    <image class="icon" src="../../icons/account_login.png" background-size="cover"></image>
-    <view class='text'>帐号登录</view>
-  </view>
-  <view class='item' bindtap='deviceCodeScan'>
-    <image class="icon" src="/icons/code_scan.png" background-size="cover"></image>
-    <view class='text'>扫码借机</view>
-  </view>
-  <view class='item' bindtap='goDeviceUpload'>
-    <image class="icon" src="/icons/device_upload.png" background-size="cover"></image>
-    <view class='text'>设备上传</view>
-  </view>
-</view>
-<!--功能快捷方式end-->
-<view class='content-container'>
-  <!--设备类别选择start-->
-  <scroll-view class="deviceType-container">
-    <view class="deviceType {{deviceTypeSelected.id==item.id?'active':''}}" wx:for="{{deviceTypes}}" wx:key="item"
-      data-id="{{item.id}}" bindtap="onDeviceTypeClick">
-      <view class="name {{deviceTypeSelected.id==item.id?'active':''}}">{{item.name}}</view>
+    <view wx:else class='item' bindtap='goLogin'>
+      <image class="icon" src="../../icons/account_login.png" background-size="cover"></image>
+      <view class='text'>帐号登录</view>
     </view>
-  </scroll-view>
-  <!--设备类别选择end-->
-  <!--设备展示区域start-->
-  <scroll-view scroll-y="true" scroll-top="0" class="devices-container">
-    <view wx:if="{{!deviceData}}" class="no-data">
-      <view class="line"></view>
-      <view class="txt">暂无商品</view>
-      <view class="line"></view>
+    <view class='item' bindtap='deviceCodeScan'>
+      <image class="icon" src="../../icons/code_scan.png" background-size="cover"></image>
+      <view class='text'>扫码借机</view>
     </view>
-    <view class="devices" wx:for="{{deviceData}}" wx:key="item">
-      <image class='pic' src="{{item.deviceImage}}"></image>
-      <view class="name ellipsis">{{item.deviceName}}</view>
-      <view class="sncode">序列号：{{item.deviceNo}}</view>
-      <view class="borrower">持有人：{{item.borrowerDepartment}}_{{item.borrowerName}}</view>
+    <view class='item' bindtap='goDeviceUpload'>
+      <image class="icon" src="../../icons/device_upload.png" background-size="cover"></image>
+      <view class='text'>设备上传</view>
     </view>
-  </scroll-view>
-  <!--设备展示区域end-->
+    <!--功能快捷方式end-->
+  </view>
+  <view class='cates_container'>
+    <!--左侧分类菜单-->
+    <scroll-view scroll-y class="left_menu">
+      <view class="deviceType {{deviceTypeSelected.id==item.id?'active':''}}" wx:for="{{deviceTypes}}" wx:key="this"
+        data-id="{{item.id}}" bindtap="onDeviceTypeClick">
+        <view class="name {{deviceTypeSelected.id==item.id?'active':''}}">{{item.name}}</view>
+      </view>
+    </scroll-view>
+    <!--右侧设备内容-->
+    <scroll-view scroll-y class="right_content">
+      <view class="devices" wx:for="{{deviceData}}" wx:key="item">
+        <image class='pic' src="{{item.deviceImage}}"></image>
+        <view class="device_content">
+          <view class="name">{{item.deviceName}}</view>
+          <view class="sncode">序列号：{{item.deviceNo}}</view>
+          <view class="borrower">持有人：{{item.borrowerName}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
 </view>

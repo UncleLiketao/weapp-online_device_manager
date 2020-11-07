@@ -1,45 +1,6 @@
 /* 搜索框wxss*/
 page {
-  width: 100vw;
-  height: 100vh;
-}
-
-.search {
-  width: 98%;
-}
-
-.search_arr {
-  border: 1px solid #d0d0d0;
-  border-radius: 10rpx;
-  margin-left: 20rpx;
-}
-
-.search_arr input {
-  margin-left: 60rpx;
-  height: 60rpx;
-  border-radius: 5px;
-}
-
-.sousuo {
-  padding-left: 38%;
-  width: 15%;
-  line-height: 150%;
-  text-align: center;
-}
-
-.page_row {
-  display: flex;
-  flex-direction: row
-}
-
-.searchcion {
-  margin: 10rpx 10rpx 10rpx 10rpx;
-  position: absolute;
-  margin-left: 38%;
-  z-index: 2;
-  width: 15px;
-  height: 15px;
-  text-align: center;
+  height: 100%;
 }
 
 /*功能快捷方式wxss*/
@@ -70,51 +31,63 @@ page {
 }
 
 /* 分类栏wxss*/
-.content-container {
-  width: 100vw;
+.home {
   height: 100%;
-  margin-top: 32rpx;
+}
+
+.home .cates_container {
+  height:calc( 100vh - 260rpx);
   display: flex;
 }
 
-.deviceType-container .deviceType.active {
-  border-left: 4rpx solid #d81e06;
+.home .cates_container .left_menu{
+  flex: 2;
+}
+.home .cates_container .left_menu .menu_item{
+  height:80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
 }
 
-.deviceType-container .deviceType .name.active {
-  color: #d81e06;
+.home .cates_container .right_content{
+  flex: 5;
+}
+
+.cates_container .deviceType.active {
+  border-left: 4rpx solid #65c294;
+}
+
+.cates_container .deviceType .name.active {
+  color: #65c294;
   font-weight: bold;
 }
 
-.deviceType-container {
-  width: 180rpx;
-  height: 100%;
-}
 
-.deviceType-container .deviceType {
+.cates_container .deviceType {
   padding: 30rpx 0rpx;
   text-align: center;
 }
 
-.deviceType-container .deviceType .name {
+.cates_container .deviceType .name {
   display: inline-block;
   font-size: 28rpx;
-  color: #646464;
   line-height: 1.2;
   text-align: left;
   pointer-events: none;
 }
 
 /* 设备栏wxss*/
-.devices-container {
+.right_content {
   flex: 1;
   min-height: 100%;
   background-color: #F2f2f2
 }
 
 .devices {
+  display: flex;
   position: relative;
-  padding: 20rpx 30rpx;
   font-size: 36rpx;
   line-height: 40rpx;
   border-bottom: 1px solid #f7f7f7;
@@ -136,25 +109,15 @@ page {
   flex-direction: column;
 }
 
-.ellipsis {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-}
-
 .devices .sncode {
-  display: flex;
   margin-top: 10rpx;
-  font-size: 28rpx;
+  font-size: 25rpx;
   line-height: 40rpx;
 }
 
 .devices .borrower {
   display: flex;
   margin-top: 10rpx;
-  font-size: 28rpx;
+  font-size: 25rpx;
   line-height: 40rpx;
 }
